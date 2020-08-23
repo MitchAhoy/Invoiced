@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+const App = () => {
+
+  const getTest = async () => {
+    const res = await fetch('/test')
+    const data = await res.json()
+  
+    // return data.test
+    console.log(data)
+  }
+
+  // useEffect(() => {
+  //   const paragraph = getTest()
+
+  // })
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+        <button><a href='/auth/google'>Sign In</a></button>
+        <p>{getTest()}</p>
     </div>
   );
 }
