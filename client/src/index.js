@@ -1,20 +1,24 @@
 import React, { useContext } from 'react';
 import { UserProvider } from './contexts/user.context'
+import theme from './theme'
+import { ThemeProvider } from '@material-ui/styles'
 import ReactDOM from 'react-dom';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom'
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserProvider>
-      <App />
-    </UserProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <UserProvider>
+          <App />
+        </UserProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
