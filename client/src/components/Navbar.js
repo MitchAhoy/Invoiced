@@ -60,13 +60,12 @@ const Navbar = () => {
                     </IconButton>
 					<Menu
                         id='account-menu'
-                        // keepMounted
                         open={menuVisible}
                         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                     >
                         <MenuItem onClick={handleMenuVisible}>Settings</MenuItem>
-                        <MenuItem onClick={handleMenuVisible}><Link underline='none' href='/api/logout'>Sign Out</Link></MenuItem>
+                        <MenuItem onClick={handleMenuVisible}><Link underline='none' href='/api/logout' color='inherit'>Sign Out</Link></MenuItem>
                     </Menu>
                     </>
 				) : (
