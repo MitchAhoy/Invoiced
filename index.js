@@ -23,6 +23,7 @@ app.use(passport.session())
 
 require('./routes/authRoutes')(app)
 require('./routes/testRoutes')(app)
+require('./routes/payments/stripe')(app)
 
 
 if (process.env.NODE_ENV === 'production') {

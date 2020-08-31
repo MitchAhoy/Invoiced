@@ -7,7 +7,8 @@ const userSchema = new Schema({
     lastName: String,
     email: String,
     profileImage: String,
-    credits: { type: Number, default: 0 }
+    credits: { type: Number, default: 0 },
+    verified: Boolean
 })
 
 mongoose.model('user', userSchema)

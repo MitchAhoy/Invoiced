@@ -36,6 +36,7 @@ passport.use(
 				lastName: profile.name.familyName,
 				email: profile.emails[0].value,
 				profileImage: profile.photos[0].value,
+				verified: false
 			}).save()
 			done(null, user)
 		}
