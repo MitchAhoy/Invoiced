@@ -34,12 +34,16 @@ const useStyles = makeStyles((theme) => ({
 		color: '#000',
 	},
 	verificationAlert: {
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	verifyButton: {
 		background: '#FFA129', 
 		color: '#fff',
-		marginRight: theme.spacing(5)
+		marginRight: theme.spacing(5),
+		padding: '0.5rem 1rem',
+		borderRadius: '5px',
+		textAlign: 'right',
+		marginLeft: theme.spacing(2)
 	},
 }))
 
@@ -65,7 +69,7 @@ const Navbar = () => {
 							In order to recieve funds you will first need to verify
 							your identity.
 
-							<Link className={classes.verifyButton} href={onboardingLink}>Verify Now</Link>
+							<Link className={classes.verifyButton} href={onboardingLink} underline='none'>Verify Now</Link>
 							
 						</Alert>
 				
