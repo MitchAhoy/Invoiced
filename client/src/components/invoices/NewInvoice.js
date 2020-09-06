@@ -1,43 +1,32 @@
-import React from 'react'
-import {Typography, Paper, TextField, makeStyles} from '@material-ui/core'
+import React, { useContext } from 'react'
+import InvoiceForm from './InvoiceForm'
+import InvoiceFormReview from './InvoiceFormReview'
+import { NewInvoiceContext } from '../../contexts/newInvoice.context'
+import {
+	Paper,
+	makeStyles,
+	CssBaseline,
+} from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
-    title: {
-        marginBottom: '1rem'
-    },
-    formContainer: {
-        padding: '1rem 2rem',
-        width: '75%'
-    },
-    form: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    formInput: {
-       maxWidth: '75%' 
-    }
+	formContainer: {
+		padding: '1rem 2rem',
+		maxWidth: '700px',
+	},
 }))
 
-
 const NewInvoice = () => {
+	const classes = useStyles()
+    const { showReview } = useContext(NewInvoiceContext)
 
-    const classes = useStyles()
-
-
-    return(
-        <div>
-            <Typography variant='h4' className={classes.title}>
-                Create A New Invoice 🧾
-            </Typography>
-            <Paper elevation={0} className={classes.formContainer}>
-                <form className={classes.form}>
-                    <TextField label='Recipient First Name' name='First Name' className={classes.formInput}/>
-                    <TextField label='Recipient Last Name' name='Last Name'/>
-                    <TextField label='' name='to'/>
-                </form>
-            </Paper>
-        </div>
-    )
+	return (
+		<div>
+			<CssBaseline />
+			<Paper elevation={0} className={classes.formContainer}>
+				{showReview ? <InvoiceFormReview /> : <InvoiceForm />}
+			</Paper>
+		</div>
+	)
 }
 
 export default NewInvoice
