@@ -8,6 +8,7 @@ const userSchema = new Schema({
     email: String,
     profileImage: String,
     credits: { type: Number, default: 0 },
+    verificationURL: String,
     verified: Boolean
 })
 

@@ -4,9 +4,10 @@ const stripe = Stripe(stripeSecretKey)
 
 module.exports = (app) => {
 	app.post('/stripe/create_account_hosted', async (req, res) => {
+		if (req.user.verified) return
 		try {
 			const account = await stripe.accounts.create({
-        country: 'AU',
+        		country: 'AU',
 				type: 'express',
 				requested_capabilities: ['card_payments', 'transfers', 'card_payments'],
 			})

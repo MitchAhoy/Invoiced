@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { NewInvoiceContext } from '../../contexts/newInvoice.context'
+import { Link } from 'react-router-dom'
 import {
 	Typography,
 	Paper,
@@ -29,16 +30,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const InvoiceForm = () => {
+const InvoiceForm = ({ history }) => {
     const classes = useStyles()
-    const {formDetails, handleFormChange, handleShowReview} = useContext(NewInvoiceContext)
+	const {formDetails, handleFormChange, handleShowReview} = useContext(NewInvoiceContext)
 
 	const newInvoiceFields = formFields.map(({ label, name, type }) => (
 		<TextField
             key={name}
             label={label}
             name={name}
-			htmlFor={name}
             className={classes.formInput}
             type={type}
 			required
@@ -57,13 +57,14 @@ const InvoiceForm = () => {
 				<form className={classes.form} onSubmit={handleShowReview}>
 					{newInvoiceFields}
 					<div className={classes.formButtons}>
-						<Button
-							variant='contained'
-							color='secondary'
-							type='submit'
-						>
-							Cancel
-						</Button>
+						<Link to={'/dashboard'} underline='none'>
+							<Button
+								variant='contained'
+								color='secondary'
+							>
+								Cancel
+							</Button>
+						</Link>
 						<Button
 							variant='contained'
 							color='primary'

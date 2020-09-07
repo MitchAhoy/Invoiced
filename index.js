@@ -4,6 +4,7 @@ const cookieSession = require('cookie-session')
 const passport = require('passport')
 const keys = require('./config/keys')
 require('./models/User')
+require('./models/Invoice')
 require('./services/passport')
 
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }).catch(err => console.log(err))
@@ -23,6 +24,7 @@ app.use(passport.session())
 
 require('./routes/authRoutes')(app)
 require('./routes/testRoutes')(app)
+require('./routes/invoiceRoutes')(app)
 require('./routes/payments/stripe')(app)
 
 

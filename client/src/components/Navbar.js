@@ -10,17 +10,17 @@ import {
 	Menu,
 	MenuItem,
 	CssBaseline,
-	Link,
-	Container
+	Link
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import { CreditCard, AccountCircle } from '@material-ui/icons'
+import { NavLink } from 'react-router-dom'
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		position: 'absolute',
 		flexGrow: 1,
-		margin: '0',
+		marginBottom: '1rem',
 		background: '#fff',
 	},
 	toolbar: {
@@ -29,25 +29,39 @@ const useStyles = makeStyles((theme) => ({
 	},
 	logo: {
 		marginRight: theme.spacing(2),
+		textDecoration: 'none',
+		underline: 'none'
 	},
 	accountIcon: {
 		color: '#000',
 	},
 	verificationAlert: {
 		textAlign: 'center',
+		alignItems: 'center'
 	},
 	verifyButton: {
 		background: '#FFA129', 
 		color: '#fff',
 		marginRight: theme.spacing(5),
+		marginTop: theme.spacing(1),
 		padding: '0.5rem 1rem',
 		borderRadius: '5px',
 		textAlign: 'right',
-		marginLeft: theme.spacing(2)
+		marginLeft: theme.spacing(2),
+		display: 'inline-block',
+		[theme.breakpoints.down('xs')]: {
+			display: 'block',
+			textAlign: 'center',
+			maxWidth: '25%',
+			margin: '0.5rem auto'
+		}
 	},
 }))
 
+
+
 const Navbar = () => {
+	
 	const { _id, verified, onboardingLink } = useContext(UserContext)
 	const classes = useStyles()
 
@@ -58,8 +72,8 @@ const Navbar = () => {
 		<>
 			<AppBar
 				className={classes.root}
-				position='static'
 				onClick={menuVisible ? handleMenuVisible : undefined}
+				position='sticky'
 			>
 				<CssBaseline />
 				{!verified && (
@@ -76,10 +90,12 @@ const Navbar = () => {
 					
 				)}
 				<Toolbar className={classes.toolbar}>
-					<Button contained className={classes.logo} edge='start'>
-						<CreditCard className={classes.logo} />
-						<Typography variant='h5'>Invoiced</Typography>
-					</Button>
+					<NavLink to='/dashboard' className={classes.logo}>
+						<Button varient='contained' className={classes.logo} edge='start' >
+							<CreditCard className={classes.logo} />
+							<Typography variant='h5'>Invoiced</Typography>
+						</Button>
+					</NavLink>
 					{_id ? (
 						<>
 							<IconButton

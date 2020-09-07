@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { UserProvider } from './contexts/user.context'
+import { NewInvoiceProvider } from './contexts/newInvoice.context'
+import { InvoicesProvider } from './contexts/invoices.context'
 import theme from './theme'
 import { ThemeProvider } from '@material-ui/styles'
 import ReactDOM from 'react-dom';
@@ -13,7 +15,11 @@ ReactDOM.render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <UserProvider>
-          <App />
+          <NewInvoiceProvider>
+            <InvoicesProvider>
+              <App />
+            </InvoicesProvider>
+          </NewInvoiceProvider>
         </UserProvider>
       </ThemeProvider>
     </BrowserRouter>
