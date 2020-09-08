@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../contexts/user.context'
+// import { StripeRegistrationContext } from '../contexts/stripeRegistration.context'
 import {
 	AppBar,
 	Toolbar,
@@ -62,7 +63,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
 	
-	const { _id, verified, onboardingLink } = useContext(UserContext)
+	// const { _id, verified, onboardingLink, verification } = useContext(UserContext)
+	// const { user: {verification: { verified, verificationURL } }, _id } = useContext(UserContext)
+	const { user: {verification, _id} } = useContext(UserContext)
+	if (verification) console.log(verification.verificationURL)
+
 	const classes = useStyles()
 
 	const [menuVisible, setmenuVisible] = useState(false)
@@ -76,14 +81,14 @@ const Navbar = () => {
 				position='sticky'
 			>
 				<CssBaseline />
-				{!verified && (
+				{verification && !verification.verified && (
 						
 						<Alert severity='warning' className={classes.verificationAlert}>
 							
 							In order to recieve funds you will first need to verify
 							your identity.
 
-							<Link className={classes.verifyButton} href={onboardingLink} underline='none'>Verify Now</Link>
+							<Link className={classes.verifyButton} href={verification.verificationURL} underline='none'>Verify Now</Link>
 							
 						</Alert>
 				

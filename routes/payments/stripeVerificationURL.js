@@ -1,8 +1,12 @@
 // const { stripeSecretKey } = require('../../config/keys')
 // const Stripe = require('stripe')
 // const stripe = Stripe(stripeSecretKey)
+// const mongoose = require('mongoose')
+// const User = mongoose.model('user')
 
 // module.exports = stripeVerificationURL = () => {
+//     console.log(req.user)
+//     if (req.user.onboardingLink) return
 //     try {
 //         const account = await stripe.accounts.create({
 //             country: 'AU',
@@ -18,9 +22,11 @@
 //             type: 'account_onboarding',
 //         })
 
+//         const updateUserLink = await User.findOneAndUpdate({_id: require.user.id}, {verificationURL: accountLink.url}).save()
 
-//           res.send(accountLink.url)
-//           return accountLink.url
+
+//           res.send(updateUserLink)
+//           return updateUserLink
 
   
 //     } catch (err) {

@@ -7,7 +7,7 @@ require('./models/User')
 require('./models/Invoice')
 require('./services/passport')
 
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }).catch(err => console.log(err))
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false  }).catch(err => console.log(err))
 
 const app = express()
 

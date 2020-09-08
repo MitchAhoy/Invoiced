@@ -8,8 +8,11 @@ const userSchema = new Schema({
     email: String,
     profileImage: String,
     credits: { type: Number, default: 0 },
-    verificationURL: String,
-    verified: Boolean
+    verification: {
+        verified: Boolean,
+        verificationURL: String,
+        destroyVerificationURL: Number
+    }
 })
 
 mongoose.model('user', userSchema)
