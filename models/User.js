@@ -12,7 +12,8 @@ const userSchema = new Schema({
         verified: Boolean,
         verificationURL: String,
         destroyVerificationURL: Number
-    }
+    },
+    stripeAcct: String
 })
 
 mongoose.model('user', userSchema)
