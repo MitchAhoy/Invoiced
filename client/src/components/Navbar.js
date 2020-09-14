@@ -63,10 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
 	
-	// const { _id, verified, onboardingLink, verification } = useContext(UserContext)
-	// const { user: {verification: { verified, verificationURL } }, _id } = useContext(UserContext)
-	const { user: {verification, _id} } = useContext(UserContext)
-	if (verification) console.log(verification.verificationURL)
+	const { user: {verification, _id, verified} } = useContext(UserContext)
 
 	const classes = useStyles()
 
@@ -81,7 +78,7 @@ const Navbar = () => {
 				position='sticky'
 			>
 				<CssBaseline />
-				{verification && !verification.verified && (
+				{_id && !verified && (
 						
 						<Alert severity='warning' className={classes.verificationAlert}>
 							
