@@ -1,9 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { InvoicesContext } from '../contexts/invoices.context'
 import {
 	Container,
 	CssBaseline,
-	Paper,
 	Typography,
 	makeStyles,
 	Fab,
@@ -11,6 +10,7 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
 import InvoiceCard from './InvoiceCard'
+import InvoiceDetailedCard from './InvoiceDetailedCard'
 
 const useStyles = makeStyles((theme) => ({
 	fab: {
@@ -22,6 +22,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
 	const { invoices } = useContext(InvoicesContext)
+	const [isReviewingInvoice, setisReviewingInvoice] = useState(false)
+	const [detailedInvoice, setDetailedInvoice] = useState([])
+	// const displayDetailedCard = (id) => {
+	// 	const specInvoice = invoices.filter(i => i._id == id)
+	// 	setDetailedInvoice(specInvoice)
+	// 	setisReviewingInvoice(!isReviewingInvoice)
+	// }
 
 	const classes = useStyles()
 
@@ -32,21 +39,25 @@ const Dashboard = () => {
 			</Typography>
 			<CssBaseline />
 			<Container>
-				{invoices && invoices.length > 0
+				{invoices && invoices.length > 0 && !isReviewingInvoice
 					? invoices.map(
 							({ email, deliverables, amount, paid, _id, issuedDate }) => (
 								<InvoiceCard
 									key={_id}
+									id={_id}
 									email={email}
 									deliverables={deliverables}
 									amount={amount}
 									paid={paid}
 									issuedDate={issuedDate}
+									// displayDetailedCard={displayDetailedCard}
 								/>
 							)
 					  )
-					: 'nothing'}
+					: 'Create your first invoice!'}
 			</Container>
+
+
 			<Link to='/new/invoice'>
 				<Fab
 					className={classes.fab}

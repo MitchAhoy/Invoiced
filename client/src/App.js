@@ -5,6 +5,8 @@ import Dashboard from './components/Dashboard'
 import NewInvoice from './components/invoices/NewInvoice'
 import VerificationSuccess from './components/VerificationSuccess'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
+import InvoiceDetailedCard from './components/InvoiceDetailedCard'
+import NewCustomer from './components/NewCustomer'
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar
@@ -26,6 +28,8 @@ const App = () => {
 						<Route exact path='/verification-success' component={VerificationSuccess} />
 						<Route exact path='/dashboard' component={Dashboard} />
 						<Route exact path='/new/invoice' component={NewInvoice} />
+						<Route exact path='/new/customer' component={NewCustomer} />
+						<Route path='/invoice/:id' component={InvoiceDetailedCard} />
 					</Switch>
 
 				</Container>

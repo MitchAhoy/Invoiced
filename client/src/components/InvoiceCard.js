@@ -4,11 +4,12 @@ import {
 	Paper,
 	Typography,
 	makeStyles,
-	IconButton,
+	Button,
 	Chip
 } from '@material-ui/core'
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons'
 import Moment from 'moment'
+import { Link } from 'react-router-dom'
+// /invoice/:id
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -29,11 +30,16 @@ const useStyles = makeStyles((theme) => ({
 	invoiceAmount: {
 		margin: 'auto',
 		padding: '0 12px'
+	},
+	moreBtn: {
+		textDecoration: 'none'
 	}
 }))
 
-const InvoiceCard = ({ email, deliverables, issuedDate, amount, paid }) => {
+const InvoiceCard = ({ email, deliverables, issuedDate, amount, paid, displayDetailedCard, id }) => {
 	const classes = useStyles()
+
+	const formatCurrency = new Intl.NumberFormat('en-AU', {style: 'currency', currency: 'AUD'}).format(amount)
 
 	return (
 		<Paper className={classes.card}>
@@ -47,15 +53,10 @@ const InvoiceCard = ({ email, deliverables, issuedDate, amount, paid }) => {
 			</div>
 			<div  className={classes.cardRight}>
 				<div className={classes.invoiceAmount} style={{flexDirection: 'row'}}>
-					<Chip label={paid ? `$${amount} Paid` : `$${amount} Unpaid`} color={paid ? 'primary' : 'secondary'}/>
+					<Chip label={paid ? `${formatCurrency} Paid` : `${formatCurrency} Unpaid`} color={paid ? 'primary' : 'secondary'}/>
 				</div>
 				<div>
-					<IconButton>
-						<EditIcon />
-					</IconButton>
-					<IconButton>
-						<DeleteIcon />
-					</IconButton>
+					<Link className={classes.moreBtn} to={`/invoice/${id}`}><Button variant='contained' color='inherit'>More</Button></Link>
 				</div>
 			</div>
 		</Paper>
