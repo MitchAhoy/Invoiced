@@ -7,18 +7,39 @@ import {
 	makeStyles,
 	Button,
 	CssBaseline,
-	Container
+	Container,
 } from '@material-ui/core'
 
+const useStyles = makeStyles((theme) => ({
+	formButtons: {
+		display: 'flex',
+		marginTop: '2rem',
+		justifyContent: 'space-between',
+	},
+}))
+
 const NewCustomer = () => {
+	const classes = useStyles()
+
 	return (
 		<Container>
 			<CssBaseline />
 			<Typography variant='h4'>Create A New Customer 🧍</Typography>
 
-            <form>
-                <TextField />
-            </form>
+			<form>
+				<TextField />
+
+				<div className={classes.formButtons}>
+					<Link to={'/dashboard'} underline='none'>
+						<Button variant='contained' color='secondary'>
+							Cancel
+						</Button>
+					</Link>
+					<Button variant='contained' color='primary' type='submit'>
+						Review
+					</Button>
+				</div>
+			</form>
 		</Container>
 	)
 }

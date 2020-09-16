@@ -15,6 +15,7 @@ module.exports = (app) => {
                 deliverables: deliverables,
                 amount: amount,
                 paid: false,
+                issuedDate: Date.now(),
                 _user: req.user.id
             }).save()
             res.send(invoice.data)

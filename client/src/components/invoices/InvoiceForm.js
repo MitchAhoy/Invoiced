@@ -10,7 +10,7 @@ import {
 	CssBaseline,
 } from '@material-ui/core'
 
-import formFields from './formFields'
+import { invoiceFormFields } from './formFields'
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -34,7 +34,7 @@ const InvoiceForm = ({ history }) => {
     const classes = useStyles()
 	const {formDetails, handleFormChange, handleShowReview} = useContext(NewInvoiceContext)
 
-	const newInvoiceFields = formFields.map(({ label, name, type }) => (
+	const newInvoiceFields = invoiceFormFields.map(({ label, name, type }) => (
 		<TextField
             key={name}
             label={label}

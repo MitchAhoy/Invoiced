@@ -7,11 +7,11 @@ const bodyParser = require('body-parser')
 
 module.exports = (app) => {
 	app.post('/stripe/create_account_hosted', async (req, res) => {
-		if (
-			req.user.verification.verified &&
-			req.user.verification.destroyVerificationURL <= Date.now()
-		)
+		if (req.user.verified) {
+			res.send('user already verified')
 			return
+		}
+			
 		try {
 			const account = await stripe.accounts.create({
 				country: 'AU',
@@ -63,18 +63,38 @@ module.exports = (app) => {
 	)
 
 	app.post('/stripe/stripe_verification', async (req, res) => {
+		console.log(req.body)
 
-		res.send('verifying..')
-		// const user = User.find({_id: req.user._id})
+		try {
+			const verifyUser = await User.findByIdAndUpdate(
+				{ _id: req.user._id },
+				{ verified: true, stripeAcct: req.body.acct },
+				{ new: true }, 
+				(err, updated) => console.log(err, updated)
+			)
 
-		// try {
-		//     const verifyUser = await User.findByIdAndUpdate({_id: req.user._id}, {...user, verification: {verified: true}, stripeAcct: req.body.clientVerification.acct})
-		//     res.send(`${user.firstName} is verified`)
-		// } catch (err) {
-		//     console.log(err)
-		// 	res.status(400)
-		// 	res.send({ error: err })
-		// 	return
-		// }
+			res.send(verifyUser)
+		} catch (err) {
+			console.log(err)
+			res.status(400)
+			res.send({ error: err })
+			return
+		}
+	})
+
+	app.post('/stripe/create_customer', async (req,res) => {
+		const customer = await stripe.customers.create(
+			{email: req.body.customerEmail},
+			{stripeAccount: req.user.stripeAcct}
+		)
+
+		const account = await stripe.accounts.retrieve(req.user.stripeAcct)
+
+		console.log(customer, account)
+		res.send({customer, account})
+	})
+
+	app.post('/stripe/invoice/create', async (req, res) => {
+
 	})
 }

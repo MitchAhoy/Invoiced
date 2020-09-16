@@ -35,8 +35,8 @@ passport.use(
 				lastName: profile.name.familyName,
 				email: profile.emails[0].value,
 				profileImage: profile.photos[0].value,
+				verified: false,
 				verification: {
-					verified: false,
 					verificationURL: '',
 					destroyVerificationURL: 0
 				}
