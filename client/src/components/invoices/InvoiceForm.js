@@ -10,7 +10,7 @@ import {
 	CssBaseline,
 } from '@material-ui/core'
 
-import { invoiceFormFields } from './formFields'
+import {invoiceFormFields} from '../formFields'
 
 const useStyles = makeStyles((theme) => ({
 	title: {

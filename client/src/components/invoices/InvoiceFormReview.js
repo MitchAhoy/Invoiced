@@ -1,8 +1,7 @@
 import React, {useContext} from 'react'
 import { NewInvoiceContext } from '../../contexts/newInvoice.context'
-import formFields from './formFields'
+import {invoiceFormFields} from '../formFields'
 import {Typography, makeStyles, Button, CssBaseline} from '@material-ui/core'
-import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -24,7 +23,7 @@ const InvoiceFormReview = () => {
     const classes = useStyles()
     const {formDetails, handleShowReview, sendInvoice} = useContext(NewInvoiceContext)
 
-    const reviewFields = formFields.map(({label, name}) => (
+    const reviewFields = invoiceFormFields.map(({label, name}) => (
         <div>
             <Typography variant='caption'>{label}</Typography>
             <Typography variant='body1'>{formDetails[name]}</Typography>
