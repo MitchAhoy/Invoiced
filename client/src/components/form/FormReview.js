@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import { NewInvoiceContext } from '../../contexts/newInvoice.context'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import {
 	Typography,
@@ -10,7 +9,6 @@ import {
 	CssBaseline,
 } from '@material-ui/core'
 
-import {invoiceFormFields} from '../formFields'
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -30,11 +28,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const InvoiceForm = ({ history }) => {
+const FormReview = ({formInfo: {fields, title}, formData: {inputDetails, handleFormReview, handleFormSubmit}}) => {
     const classes = useStyles()
-	const {formDetails, handleFormChange, handleShowReview} = useContext(NewInvoiceContext)
 
-	const newInvoiceFields = invoiceFormFields.map(({ label, name, type }) => (
+    const renderFields = fields.map(({ label, name, type }) => (
 		<TextField
             key={name}
             label={label}
@@ -42,8 +39,9 @@ const InvoiceForm = ({ history }) => {
             className={classes.formInput}
             type={type}
 			required
-            onChange={handleFormChange}
-            value={formDetails[name]}
+			value={inputDetails[name]}
+			variant='outlined'
+			disabled
 		/>
 	))
 
@@ -51,26 +49,25 @@ const InvoiceForm = ({ history }) => {
 		<div>
 			<CssBaseline />
 			<Typography variant='h4' className={classes.title}>
-				Create A New Invoice 🧾
+				{title}
 			</Typography>
 			
-				<form className={classes.form} onSubmit={handleShowReview}>
-					{newInvoiceFields}
+				<form className={classes.form} onSubmit={handleFormSubmit}>
+				{renderFields}
 					<div className={classes.formButtons}>
-						<Link to={'/dashboard'} underline='none'>
 							<Button
 								variant='contained'
-								color='secondary'
+                                color='secondary'
+                                onClick={handleFormReview}
 							>
-								Cancel
+								Edit
 							</Button>
-						</Link>
 						<Button
 							variant='contained'
 							color='primary'
 							type='submit'
 						>
-							Review
+							Submit
 						</Button>
 					</div>
 				</form>
@@ -79,4 +76,4 @@ const InvoiceForm = ({ history }) => {
 	)
 }
 
-export default InvoiceForm
+export default FormReview

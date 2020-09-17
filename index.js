@@ -5,6 +5,7 @@ const passport = require('passport')
 const keys = require('./config/keys')
 require('./models/User')
 require('./models/Invoice')
+require('./models/Customer')
 require('./services/passport')
 
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false  }).catch(err => console.log(err))

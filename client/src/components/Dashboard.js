@@ -58,7 +58,7 @@ const Dashboard = () => {
 			</Container>
 
 
-			<Link to='/new/invoice'>
+			<Link to='/create/invoice'>
 				<Fab
 					className={classes.fab}
 					aria-label='create-invoice'

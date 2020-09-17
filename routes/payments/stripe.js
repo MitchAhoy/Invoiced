@@ -3,6 +3,7 @@ const Stripe = require('stripe')
 const stripe = Stripe(stripeSecretKey)
 const mongoose = require('mongoose')
 const User = mongoose.model('user')
+const Customer = mongoose.model('customer')
 const bodyParser = require('body-parser')
 
 module.exports = (app) => {
@@ -11,7 +12,7 @@ module.exports = (app) => {
 			res.send('user already verified')
 			return
 		}
-			
+
 		try {
 			const account = await stripe.accounts.create({
 				country: 'AU',
@@ -69,7 +70,7 @@ module.exports = (app) => {
 			const verifyUser = await User.findByIdAndUpdate(
 				{ _id: req.user._id },
 				{ verified: true, stripeAcct: req.body.acct },
-				{ new: true }, 
+				{ new: true },
 				(err, updated) => console.log(err, updated)
 			)
 
@@ -82,19 +83,33 @@ module.exports = (app) => {
 		}
 	})
 
-	app.post('/stripe/create_customer', async (req,res) => {
-		const customer = await stripe.customers.create(
-			{email: req.body.customerEmail},
-			{stripeAccount: req.user.stripeAcct}
-		)
+	app.post('/stripe/create_customer', async (req, res) => {
+		const { customerName, customerEmail, customerAddress } = req.body
 
-		const account = await stripe.accounts.retrieve(req.user.stripeAcct)
+		try {
+			const customer = await stripe.customers.create(
+				{ email: customerEmail },
+				{ stripeAccount: req.user.stripeAcct }
+			)
 
-		console.log(customer, account)
-		res.send({customer, account})
+			const saveCustomer = await new Customer({
+				user: req.user._id,
+				name: customerName,
+				email: customerEmail,
+				address: customerAddress,
+			}).save()
+
+			console.log({ customer, saveCustomer })
+			res.send({ customer, saveCustomer })
+		} catch (err) {
+			console.log(err)
+			res.status(400)
+			res.send({ error: err })
+			return
+		}
 	})
 
-	app.post('/stripe/invoice/create', async (req, res) => {
+	app.post('/stripe/create_invoice', async (req, res) => {
 
 	})
 }

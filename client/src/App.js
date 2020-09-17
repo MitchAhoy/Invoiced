@@ -2,11 +2,9 @@ import React from 'react'
 import { makeStyles, Container } from '@material-ui/core'
 import Navbar from './components/Navbar'
 import Dashboard from './components/Dashboard'
-import NewInvoice from './components/invoices/NewInvoice'
 import VerificationSuccess from './components/VerificationSuccess'
 import { Route, Switch } from 'react-router-dom'
 import InvoiceDetailedCard from './components/InvoiceDetailedCard'
-import NewCustomer from './components/NewCustomer'
 import Form from './components/form/Form'
 
 const useStyles = makeStyles((theme) => ({
@@ -28,8 +26,6 @@ const App = () => {
 					<Switch>
 						<Route exact path='/verification-success' component={VerificationSuccess} />
 						<Route exact path='/dashboard' component={Dashboard} />
-						<Route exact path='/new/invoice' component={NewInvoice} />
-						<Route exact path='/new/customer' component={NewCustomer} />
 						<Route exact path='/create/:formFor' component={Form} />
 						<Route path='/invoice/:id' component={InvoiceDetailedCard} />
 					</Switch>

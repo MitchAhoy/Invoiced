@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const FormInput = ({formInfo: {fields, title}}) => {
+const FormInput = ({ formData: {handleFormChange, handleFormReview, inputDetails, formInfo: {fields, title}}}) => {
     const classes = useStyles()
 
 
@@ -40,6 +40,10 @@ const FormInput = ({formInfo: {fields, title}}) => {
             className={classes.formInput}
             type={type}
 			required
+			onChange={handleFormChange}
+			value={inputDetails[name]}
+			variant='outlined'
+			autoComplete='off'
 		/>
 	))
 
@@ -50,7 +54,7 @@ const FormInput = ({formInfo: {fields, title}}) => {
 				{title}
 			</Typography>
 			
-				<form className={classes.form}>
+				<form className={classes.form} onSubmit={handleFormReview}>
 					{renderFields}
 					<div className={classes.formButtons}>
 						<Link to={'/dashboard'} underline='none'>
