@@ -8,8 +8,9 @@ import {
 	Chip
 } from '@material-ui/core'
 import Moment from 'moment'
+
 import { Link } from 'react-router-dom'
-// /invoice/:id
+
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -42,7 +43,7 @@ const InvoiceCard = ({ email, deliverables, issuedDate, amount, paid, displayDet
 	const formatCurrency = new Intl.NumberFormat('en-AU', {style: 'currency', currency: 'AUD'}).format(amount)
 
 	return (
-		<Paper className={classes.card}>
+		<Paper className={classes.card} elevation={3}>
 			<CssBaseline />
 			<div className={classes.cardContainer}>
 				<Typography variant='body1'>{email}</Typography>

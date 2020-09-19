@@ -4,13 +4,10 @@ export default {
     invoice: {
         title: 'Create A New Invoice 🧾',
         fields: [
-            {label: 'First Name', name: 'firstName', type: 'text'},
-            {label: 'Last Name', name: 'lastName', type: 'text'},
-            {label: 'Deliverables', name: 'deliverables', type: 'text'},
-            {label: 'Email', name: 'email', type: 'email'},
-            {label: 'Amount', name: 'amount', type: 'number'}
+            {label: 'Customer', inputFor: 'customer', type: 'select'},
+            {label: 'Amount', inputFor: 'amount', type: 'number'},
+            {label: 'Due Date', inputFor: 'dueDate', type: 'selectDate'},
         ],
-        type: 'createInvoice',
         submit: async (state) => {
             try {
                 const response = await axios.post('/api/new_invoice', state)
@@ -23,19 +20,16 @@ export default {
     customer: {
         title: 'Create A New Customer 🕺',
         fields: [
-            {label: 'Customer Name', name: 'customerName', type: 'text'},
-            {label: 'Customer Email', name: 'customerEmail', type: 'email'},
-            {label: 'Billing Address', name: 'customerAddress', type: 'text'},
+            {label: 'Customer Name', inputFor: 'customerName', type: 'text'},
+            {label: 'Customer Email', inputFor: 'customerEmail', type: 'email'},
+            {label: 'Billing Address', inputFor: 'customerAddress', type: 'text'},
         ],
-        type: 'createCustomer',
         submit: async (state) => {
             try {
                 const response = await axios.post('/stripe/create_customer', state)
-                console.log(response)
             } catch (err) {
-                console.log(err)
                 throw new Error(err)
             }
-        }
+        },
     }
 }

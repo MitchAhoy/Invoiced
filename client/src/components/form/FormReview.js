@@ -31,15 +31,15 @@ const useStyles = makeStyles((theme) => ({
 const FormReview = ({formInfo: {fields, title}, formData: {inputDetails, handleFormReview, handleFormSubmit}}) => {
     const classes = useStyles()
 
-    const renderFields = fields.map(({ label, name, type }) => (
+    const renderFields = fields.map(({ label, inputFor, type }) => (
 		<TextField
-            key={name}
+            key={inputFor}
             label={label}
-            name={name}
+            name={inputFor}
             className={classes.formInput}
             type={type}
 			required
-			value={inputDetails[name]}
+			value={inputDetails[inputFor]}
 			variant='outlined'
 			disabled
 		/>

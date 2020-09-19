@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { InvoicesContext } from '../contexts/invoices.context'
+import { UserContext } from '../contexts/user.context'
 import {
 	Container,
 	CssBaseline,
@@ -21,14 +21,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Dashboard = () => {
-	const { invoices } = useContext(InvoicesContext)
+	const { invoices } = useContext(UserContext)
 	const [isReviewingInvoice, setisReviewingInvoice] = useState(false)
 	const [detailedInvoice, setDetailedInvoice] = useState([])
-	// const displayDetailedCard = (id) => {
-	// 	const specInvoice = invoices.filter(i => i._id == id)
-	// 	setDetailedInvoice(specInvoice)
-	// 	setisReviewingInvoice(!isReviewingInvoice)
-	// }
+
 
 	const classes = useStyles()
 
@@ -50,7 +46,6 @@ const Dashboard = () => {
 									amount={amount}
 									paid={paid}
 									issuedDate={issuedDate}
-									// displayDetailedCard={displayDetailedCard}
 								/>
 							)
 					  )

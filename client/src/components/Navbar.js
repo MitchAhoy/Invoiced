@@ -1,17 +1,16 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../contexts/user.context'
-// import { StripeRegistrationContext } from '../contexts/stripeRegistration.context'
 import {
 	AppBar,
 	Toolbar,
 	makeStyles,
 	IconButton,
-	Typography,
 	Button,
-	Menu,
-	MenuItem,
+	Popover,
+	Typography,
 	CssBaseline,
-	Link
+	Link,
+	Avatar
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import { CreditCard, AccountCircle } from '@material-ui/icons'
@@ -57,24 +56,29 @@ const useStyles = makeStyles((theme) => ({
 			margin: '0.5rem auto'
 		}
 	},
+	popoverText: {
+		padding: theme.spacing(2)
+	}
 }))
 
 
 
 const Navbar = () => {
 	
-	const { user: {verification, _id, verified} } = useContext(UserContext)
+	const { user: {verification, _id, verified, profileImage, firstName} } = useContext(UserContext)
 
 	const classes = useStyles()
 
-	const [menuVisible, setmenuVisible] = useState(false)
-	const handleMenuVisible = () => setmenuVisible(!menuVisible)
+	const [anchorEl, setAnchorEl] = useState(null)
+
+	const handleMenuClick = (evt) => setAnchorEl(evt.currentTarget)
+	const handleMenuClose = () => setAnchorEl(null)
 
 	return (
 		<>
 			<AppBar
 				className={classes.root}
-				onClick={menuVisible ? handleMenuVisible : undefined}
+				onClick={anchorEl ? handleMenuClose : undefined}
 				position='sticky'
 			>
 				<CssBaseline />
@@ -103,15 +107,20 @@ const Navbar = () => {
 							<IconButton
 								aria-controls='simple-menu'
 								aria-haspopup='true'
-								onClick={handleMenuVisible}
+								onClick={handleMenuClick}
 							>
-								<AccountCircle
+								<Avatar
 									className={classes.accountIcon}
+									alt={firstName}
+									src={profileImage}
 								/>
 							</IconButton>
-							<Menu
+							<Popover
 								id='account-menu'
-								open={menuVisible}
+								PopoverClasses={{ disableScrollLock: true }}
+								open={Boolean(anchorEl)}
+								anchorEl={anchorEl}
+								onClose={handleMenuClose}
 								anchorOrigin={{
 									vertical: 'top',
 									horizontal: 'right',
@@ -121,10 +130,10 @@ const Navbar = () => {
 									horizontal: 'right',
 								}}
 							>
-								<MenuItem onClick={handleMenuVisible}>
+								<Typography onClick={handleMenuClose} className={classes.popoverText}>
 									Settings
-								</MenuItem>
-								<MenuItem onClick={handleMenuVisible}>
+								</Typography>
+								<Typography onClick={handleMenuClose} className={classes.popoverText}>
 									<Link
 										underline='none'
 										href='/api/logout'
@@ -132,8 +141,8 @@ const Navbar = () => {
 									>
 										Sign Out
 									</Link>
-								</MenuItem>
-							</Menu>
+								</Typography>
+							</Popover>
 						</>
 					) : (
 						<Button

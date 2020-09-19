@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Invoice = mongoose.model('invoice')
+const Customer = mongoose.model('customer')
 
 module.exports = (app) => {
     // Save invoice to database
@@ -44,4 +45,18 @@ module.exports = (app) => {
         }
 
     })
+
+    // Get customers
+    app.get('/api/customers', async (req, res) => {
+		try {
+			const customers = await Customer.find({_user: req.user._id})
+            res.send(customers)
+            return
+		} catch (err) {
+			console.log(err)
+			res.status(400)
+			res.send({ error: err })
+			return
+		}
+	})
 }

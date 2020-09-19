@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import {UserContext} from '../../contexts/user.context'
 import { Paper, makeStyles, CssBaseline } from '@material-ui/core'
 import formFields from './formFields'
 import FormInput from './FormInput'
@@ -20,6 +21,8 @@ const Form = ({
 }) => {
 	const classes = useStyles()
 	const formInfo = formFields[formFor]
+	console.log(formInfo)
+	const { customers } = useContext(UserContext)
 	const [isReviewing, setIsReviewing] = useState(false)
 	const [inputDetails, setInputDetails] = useState({})
 	const handleFormChange = (evt) =>
@@ -34,6 +37,7 @@ const Form = ({
 		formInfo.submit(inputDetails)
 		history.push('/dashboard')
 	}
+
 
 	return (
 		<div>
@@ -55,6 +59,8 @@ const Form = ({
 							handleFormChange,
 							handleFormReview,
 							formInfo,
+							customers,
+							history
 						}}
 					/>
 				)}

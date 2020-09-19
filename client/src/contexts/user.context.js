@@ -5,21 +5,27 @@ export const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState({})
+	const [invoices, setInvoices] = useState({})
+	const [customers, setCustomers] = useState({})
 
 	useEffect(() => {
-		const getUser = async () => {
+		const getUserData = async () => {
 			try {
 				const userProfile = await axios.get('/api/current_user')
 				if (userProfile) setUser(userProfile.data)
+				const userInvoices = await axios.get('/api/invoices')
+				if (userInvoices) setInvoices(userInvoices.data)
+				const userCustomers = await axios.get('/api/customers')
+				if (userCustomers) setCustomers(userCustomers.data) 
 			} catch (err) {
 				throw new Error(err)
 			}
 		}
-		getUser()
+		getUserData()
 	}, [])
 
 	useEffect(() => {
-        if (user.verification) return
+        if (user.verified) return
 		const getOnboardingLink = async () => {
 			try {
 				const onboardingLink = await axios.post(
@@ -33,7 +39,7 @@ export const UserProvider = ({ children }) => {
 	}, [user])
 
 	return (
-		<UserContext.Provider value={{ user }}>
+		<UserContext.Provider value={{ user, invoices, customers }}>
 			{children}
 		</UserContext.Provider>
 	)
