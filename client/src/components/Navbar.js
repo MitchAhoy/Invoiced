@@ -10,7 +10,8 @@ import {
 	Typography,
 	CssBaseline,
 	Link,
-	Avatar
+	Avatar,
+	MenuItem
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import { CreditCard, AccountCircle } from '@material-ui/icons'
@@ -130,10 +131,10 @@ const Navbar = () => {
 									horizontal: 'right',
 								}}
 							>
-								<Typography onClick={handleMenuClose} className={classes.popoverText}>
+								<MenuItem onClick={handleMenuClose} className={classes.popoverText}>
 									Settings
-								</Typography>
-								<Typography onClick={handleMenuClose} className={classes.popoverText}>
+								</MenuItem>
+								<MenuItem onClick={handleMenuClose} className={classes.popoverText}>
 									<Link
 										underline='none'
 										href='/api/logout'
@@ -141,7 +142,7 @@ const Navbar = () => {
 									>
 										Sign Out
 									</Link>
-								</Typography>
+								</MenuItem>
 							</Popover>
 						</>
 					) : (

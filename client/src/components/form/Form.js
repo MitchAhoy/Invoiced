@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useReducer } from 'react'
 import {UserContext} from '../../contexts/user.context'
 import { Paper, makeStyles, CssBaseline } from '@material-ui/core'
-import formFields from './formFields'
+import {formFields, formInitalState, formReducer} from './formData'
 import FormInput from './FormInput'
 import FormReview from './FormReview'
 
@@ -19,24 +19,20 @@ const Form = ({
 		params: { formFor },
 	},
 }) => {
+
+	const [{isReviewing, inputDetails}, formDispatch] = useReducer(formReducer, formInitalState)
+
 	const classes = useStyles()
 	const formInfo = formFields[formFor]
-	console.log(formInfo)
+
 	const { customers } = useContext(UserContext)
-	const [isReviewing, setIsReviewing] = useState(false)
-	const [inputDetails, setInputDetails] = useState({})
-	const handleFormChange = (evt) =>
-		setInputDetails({
-			...inputDetails,
-			[evt.target.name]: evt.target.value,
-		})
-	const handleFormReview = () => setIsReviewing(!isReviewing)
-	const handleFormSubmit = (evt) => {
-		console.log(inputDetails)
-		evt.preventDefault()
-		formInfo.submit(inputDetails)
-		history.push('/dashboard')
-	}
+
+
+	const handleTypedChange = (evt) => formDispatch({type: 'UPDATE_TYPED_INPUTS', update: inputDetails , value: evt.target.value, key: evt.target.name})
+	const handleFormReview = (evt) => formDispatch({type: 'SET_IS_REVIEWING'})
+	const handleFormSubmit = (evt) => formDispatch({type: 'SUBMIT_FORM', evt, formInfo, history})
+	const handleDateChanged = (date) => formDispatch({type: 'UPDATE_DATE', date})
+
 
 
 	return (
@@ -56,8 +52,9 @@ const Form = ({
 					<FormInput
 						formData={{
 							inputDetails,
-							handleFormChange,
+							handleTypedChange,
 							handleFormReview,
+							handleDateChanged,
 							formInfo,
 							customers,
 							history

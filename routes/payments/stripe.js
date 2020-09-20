@@ -86,7 +86,7 @@ module.exports = (app) => {
 	app.post('/stripe/create_customer', async (req, res) => {
 		const { customerName, customerEmail, customerAddress } = req.body
 
-		console.log(req.user)
+		console.log(req.body)
 
 		try {
 			const customer = await stripe.customers.create(
@@ -99,6 +99,7 @@ module.exports = (app) => {
 				name: customerName,
 				email: customerEmail,
 				address: customerAddress,
+				stripeID: customer.id
 			}).save()
 
 			console.log({ customer, saveCustomer })

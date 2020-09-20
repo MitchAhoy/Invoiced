@@ -10,6 +10,7 @@ import {
 	FormControl,
 	MenuItem,
 	InputLabel,
+	InputAdornment
 } from '@material-ui/core'
 import { KeyboardDatePicker } from '@material-ui/pickers'
 
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	formInput: {
 		marginTop: '1rem',
+		width: '100%'
 	},
 	formButtons: {
 		display: 'flex',
@@ -45,17 +47,19 @@ const useStyles = makeStyles((theme) => ({
 
 const FormInput = ({
 	formData: {
-		handleFormChange,
+		handleTypedChange,
 		handleFormReview,
 		inputDetails,
+		handleDateChanged,
 		formInfo: { fields, title },
 		customers,
-		history
+		history,
+		dispatch
 	},
 }) => {
 	const classes = useStyles()
 
-	const renderFields = fields.map(({ label, inputFor, type }) => {
+	const renderFields = fields.map(({ label, inputFor, type, value }) => {
 		switch (type) {
 			case 'number':
 				return (
@@ -66,10 +70,26 @@ const FormInput = ({
 						className={classes.formInput}
 						type={type}
 						required
-						onChange={handleFormChange}
+						onChange={handleTypedChange}
 						value={inputDetails[inputFor]}
 						variant='outlined'
 						autoComplete='off'
+					/>
+				)
+			case 'currency':
+				return (
+					<TextField
+						key={inputFor}
+						label={label}
+						name={inputFor}
+						className={classes.formInput}
+						type='number'
+						required
+						onChange={handleTypedChange}
+						value={inputDetails[inputFor]}
+						variant='outlined'
+						autoComplete='off'
+						InputProps={{startAdornment: <InputAdornment variant='outlined' position="start">$</InputAdornment>}}
 					/>
 				)
 			case 'text':
@@ -81,7 +101,22 @@ const FormInput = ({
 					className={classes.formInput}
 					type={type}
 					required
-					onChange={handleFormChange}
+					onChange={handleTypedChange}
+					value={inputDetails[inputFor]}
+					variant='outlined'
+					autoComplete='off'
+				/>
+				)
+			case 'email':
+				return (
+					<TextField
+					key={inputFor}
+					label={label}
+					name={inputFor}
+					className={classes.formInput}
+					type={type}
+					required
+					onChange={handleTypedChange}
 					value={inputDetails[inputFor]}
 					variant='outlined'
 					autoComplete='off'
@@ -100,11 +135,12 @@ const FormInput = ({
 									labelId={`${inputFor}-label`}
 									id={`${inputFor}-select`}
 									label={label}
-									onChange={handleFormChange}
+									onChange={handleTypedChange}
+									name={inputFor}
 								>
-									{customers.map(({ name }) => (
-										<MenuItem key={name} value={name}>
-											{name}
+									{customers.map(({ name, email, stripeID }) => (
+										<MenuItem key={name} value={stripeID}>
+											{`${name} - ${email}`}
 										</MenuItem>
 									))}
 								</Select>
@@ -136,7 +172,7 @@ const FormInput = ({
 						format='yyyy/MM/dd'
 						value={new Date()}
 						inputVariant='outlined'
-						onChange={date => console.log(date)}
+						onChange={date => handleDateChanged(date)}
 					/>
 				)
 		}

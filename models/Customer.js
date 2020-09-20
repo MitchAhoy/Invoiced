@@ -5,6 +5,7 @@ const customerSchema = new Schema({
     name: String,
     email: String,
     address: String,
+    stripeID: String,
     _user: String
 })
 
