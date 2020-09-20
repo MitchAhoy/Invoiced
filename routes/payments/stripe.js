@@ -14,11 +14,11 @@ module.exports = (app) => {
 		}
 
 		try {
+
 			const account = await stripe.accounts.create({
 				country: 'AU',
 				type: 'express',
 				requested_capabilities: [
-					'card_payments',
 					'transfers',
 					'card_payments',
 				],
@@ -31,6 +31,7 @@ module.exports = (app) => {
 				type: 'account_onboarding',
 				collect: 'eventually_due',
 			})
+
 
 			const updateUserLink = await User.findByIdAndUpdate(
 				{ _id: req.user._id },
@@ -57,14 +58,11 @@ module.exports = (app) => {
 		'/stripe/webhooks',
 		bodyParser.raw({ type: 'application/json' }),
 		(req, res) => {
-			console.log(req.body)
-			console.log(req.user)
 			res.send({})
 		}
 	)
 
 	app.post('/stripe/stripe_verification', async (req, res) => {
-		console.log(req.body)
 
 		try {
 			const verifyUser = await User.findByIdAndUpdate(
@@ -85,8 +83,6 @@ module.exports = (app) => {
 
 	app.post('/stripe/create_customer', async (req, res) => {
 		const { customerName, customerEmail, customerAddress } = req.body
-
-		console.log(req.body)
 
 		try {
 			const customer = await stripe.customers.create(

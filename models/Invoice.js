@@ -2,12 +2,11 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const invoiceSchema = new Schema({
-    firstName: String,
-    lastName: String,
+    customer: String,
     email: String,
     deliverables: String,
-    issuedDate: Date,
-    dueDate: Date,
+    issueDate: Date,
+    payableBy: Date,
     amount: Number,
     paid: Boolean,
     _user: String
