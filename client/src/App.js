@@ -27,7 +27,7 @@ const App = () => {
 						<Route exact path='/verification-success' component={VerificationSuccess} />
 						<Route exact path='/dashboard' component={Dashboard} />
 						<Route exact path='/create/:formFor' component={Form} />
-						<Route path='/invoice/:id' component={InvoiceDetailedCard} />
+						<Route path='/invoice/:invoiceId' component={InvoiceDetailedCard} />
 					</Switch>
 
 				</Container>

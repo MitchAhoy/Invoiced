@@ -14,7 +14,7 @@ import {
 	MenuItem
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
-import { CreditCard, AccountCircle } from '@material-ui/icons'
+import { CreditCard } from '@material-ui/icons'
 import { NavLink } from 'react-router-dom'
 
 

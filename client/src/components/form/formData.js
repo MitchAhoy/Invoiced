@@ -7,7 +7,7 @@ export const formFields = {
             {label: 'Customer', inputFor: 'customer', type: 'select', value: ''},
             {label: 'Amount', inputFor: 'amount', type: 'currency', value: 0},
             {label: 'Due Date', inputFor: 'payableBy', type: 'selectDate', value: ''},
-            {label: 'Deliverables', inputFor: 'deliverables', type: 'text', value: ''}
+            {label: 'Description', inputFor: 'description', type: 'text', value: ''}
         ],
         submit: async (state) => {
             try {

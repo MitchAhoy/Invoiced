@@ -9,44 +9,49 @@ module.exports = (app) => {
 	// Save invoice to database
 	app.post('/api/new_invoice', async (req, res) => {
 		try {
-			const { customer, deliverables, amount, payableBy } = req.body
+			const { customer, description, amount, payableBy } = req.body
 
 			const product = await stripe.products.create({
-				name: deliverables,
-			})
+				name: description,
+			}, { stripeAccount: req.user.stripeAcct })
 
 			const price = await stripe.prices.create({
 				unit_amount: amount,
 				currency: 'aud',
 				product: product.id,
-			})
+			}, { stripeAccount: req.user.stripeAcct })
 
 			const invoiceItem = await stripe.invoiceItems.create({
 				customer,
 				price: price.id,
-			})
+			}, { stripeAccount: req.user.stripeAcct })
 
 			const stripeInvoice = await stripe.invoices.create(
 				{
-                    customer,
-                    transfer_data: {
-                        destination: req.user.stripeAcct
-                    }
-					
-                }
+				customer,
+				collection_method: 'send_invoice',
+				days_until_due: 30
+				}, 
+				{ stripeAccount: req.user.stripeAcct }
 			)
+
+			const sendInvoice = await stripe.invoices.sendInvoice(stripeInvoice.id, { stripeAccount: req.user.stripeAcct })
 
 			const invoice = await new Invoice({
 				customer,
-				deliverables,
+				invoiceId: sendInvoice.id,
+				email: sendInvoice.customer_email,
+				description,
 				amount,
 				paid: false,
-				issueDate: Date.now(),
-				payableBy,
+				issueDate: sendInvoice.created,
+				payableBy: sendInvoice.due_date,
+				invoiceUrl: sendInvoice.hosted_invoice_url,
+				invoicePdf: sendInvoice.invoice_pdf,
 				_user: req.user.id,
 			}).save()
-			res.send(invoice.data)
-			console.log(invoiceItem, stripeInvoice)
+			res.send(invoice)
+			console.log(sendInvoice, invoice)
 		} catch (err) {
 			console.log(err)
 			res.status(400)

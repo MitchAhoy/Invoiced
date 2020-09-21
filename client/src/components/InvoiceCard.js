@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }))
 
-const InvoiceCard = ({ email, deliverables, issuedDate, amount, paid, displayDetailedCard, id }) => {
+const InvoiceCard = ({ email, description, issuedDate, amount, paid, invoiceId }) => {
 	const classes = useStyles()
 
 	const formatCurrency = new Intl.NumberFormat('en-AU', {style: 'currency', currency: 'AUD'}).format(amount)
@@ -47,7 +47,7 @@ const InvoiceCard = ({ email, deliverables, issuedDate, amount, paid, displayDet
 			<CssBaseline />
 			<div className={classes.cardContainer}>
 				<Typography variant='body1'>{email}</Typography>
-				<Typography fontWeight='fontWightBold' variant='body1'>{deliverables}</Typography>
+				<Typography fontWeight='fontWightBold' variant='body1'>{description}</Typography>
 				<Typography variant='caption'>
 					{Moment(issuedDate).format('ll')}
 				</Typography>
@@ -57,7 +57,7 @@ const InvoiceCard = ({ email, deliverables, issuedDate, amount, paid, displayDet
 					<Chip label={paid ? `${formatCurrency} Paid` : `${formatCurrency} Unpaid`} color={paid ? 'primary' : 'secondary'}/>
 				</div>
 				<div>
-					<Link className={classes.moreBtn} to={`/invoice/${id}`}><Button variant='contained' color='inherit'>More</Button></Link>
+					<Link className={classes.moreBtn} to={`/invoice/${invoiceId}`}><Button variant='contained' color='inherit'>More</Button></Link>
 				</div>
 			</div>
 		</Paper>

@@ -3,12 +3,16 @@ const { Schema } = mongoose
 
 const invoiceSchema = new Schema({
     customer: String,
-    email: String,
-    deliverables: String,
-    issueDate: Date,
-    payableBy: Date,
+    customerEmail: String,
+    invoiceId: String,
+    customerId: String,
+    description: String,
+    issueDate: Number,
+    payableBy: Number,
     amount: Number,
     paid: Boolean,
+    invoiceUrl: String,
+    invoicePdf: String,
     _user: String
 })
 
