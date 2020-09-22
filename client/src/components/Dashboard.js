@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
 	const { invoices } = useContext(UserContext)
-	const [isReviewingInvoice, setisReviewingInvoice] = useState(false)
+
 
 
 	const classes = useStyles()
@@ -34,7 +34,7 @@ const Dashboard = () => {
 			</Typography>
 			<CssBaseline />
 			<Container>
-				{invoices && invoices.length > 0 && !isReviewingInvoice
+				{invoices && invoices.length > 0
 					? invoices.map(
 							({ email, description, amount, paid, _id, issuedDate, invoiceId }) => (
 								<InvoiceCard

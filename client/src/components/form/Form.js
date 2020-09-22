@@ -1,6 +1,7 @@
 import React, { useContext, useReducer } from 'react'
 import { UserContext } from '../../contexts/user.context'
 import { Paper, makeStyles, CssBaseline } from '@material-ui/core'
+import { useTheme } from '@material-ui/styles'
 import { formFields, formInitalState, formReducer } from './formData'
 import FormInput from './FormInput'
 import FormReview from './FormReview'
@@ -10,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: '2rem 2rem',
 		maxWidth: '700px',
 		margin: '2rem auto',
+		boxShadow: theme.boxShadow.xxl
 	},
 }))
 
@@ -23,6 +25,7 @@ const Form = ({
 	const [{isReviewing, inputDetails}, formDispatch] = useReducer(formReducer, formInitalState)
 
 	const classes = useStyles()
+	const theme = useTheme()
 	const formInfo = formFields[formFor]
 
 	const { customers } = useContext(UserContext)

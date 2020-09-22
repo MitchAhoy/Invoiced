@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		marginBottom: '1rem',
 		background: '#fff',
+		boxShadow: theme.boxShadow.lg
 	},
 	toolbar: {
 		display: 'flex',
@@ -81,6 +82,7 @@ const Navbar = () => {
 				className={classes.root}
 				onClick={anchorEl ? handleMenuClose : undefined}
 				position='sticky'
+				elevation={0}
 			>
 				<CssBaseline />
 				{_id && !verified && (
