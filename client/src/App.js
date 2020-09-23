@@ -20,7 +20,7 @@ const App = () => {
 			<nav>
 				<Navbar />
 			</nav>
-			<div className={classes.appBarSpacer}>
+			<main className={classes.appBarSpacer}>
 				<Container>
 
 					<Switch>
@@ -31,7 +31,7 @@ const App = () => {
 					</Switch>
 
 				</Container>
-			</div>
+			</main>
 		</div>
 	)
 }

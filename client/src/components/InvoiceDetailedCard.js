@@ -3,6 +3,7 @@ import { UserContext } from '../contexts/user.context'
 import { makeStyles, Button, Typography, Paper, Chip } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import formatUnixDate from '../utils/formatUnixDate'
+import axios from 'axios'
 
 
 
@@ -26,8 +27,20 @@ const useStyles = makeStyles((theme) => ({
 	backBtn: {
 		margin: '2rem auto'
 	},
-	chip: {
-		background: theme.palette.invoiceStatus.open, 
+	chipvoid: {
+		background: theme.palette.invoiceStatus.void,
+		color: '#fff'
+	},
+	chipopen: {
+		background: theme.palette.invoiceStatus.open,
+		color: '#fff'
+	},
+	chippaid: {
+		background: theme.palette.invoiceStatus.paid,
+		color: '#fff'
+	},
+	chipoverdue: {
+		background: theme.palette.invoiceStatus.overdue,
 		color: '#fff'
 	},
 	ctaBtnContainer: {
@@ -38,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 	ctaBtn: {
 		textDecoration: 'none'
 	}
-	
+
 }))
 
 const InvoiceDetailedCard = ({
@@ -49,7 +62,7 @@ const InvoiceDetailedCard = ({
 
 	const classes = useStyles()
 
-	const { invoices, customers } = useContext(UserContext)
+	const { invoices, customers, getUserData } = useContext(UserContext)
 	const currentInvoice = invoices.length > 0 ? invoices.filter((i) => i.invoiceId === invoiceId)[0] : {}
 	const currentCustomer = customers.length > 0 ? customers.filter((c) => c.stripeID === currentInvoice.customer)[0] : {}
 
@@ -60,79 +73,87 @@ const InvoiceDetailedCard = ({
 		invoicePdf,
 		invoiceUrl,
 		issueDate,
-		paid,
+		status,
 		payableBy,
 	} = currentInvoice
 	const { name, address, email } = currentCustomer
 
+	const voidInvoice = () => {
+		const confirmation = window.confirm('Are you sure you want to void this invoice? This action can not be undone.')
+		if (confirmation) axios.post(`/api/invoices/${invoiceId}/void`)
+		getUserData()
+	}
+
 	return (
 		<div className={classes.invoiceContainer}>
-		
+
 			<Paper className={classes.invoiceSheet} elevation={0}>
 				<div className={classes.cardContainer}>
 					<div>
-					<Typography variant='caption' fontWeight={500}>Bill to</Typography>
-				<Typography variant='body1' gutterBottom>{email}</Typography>
+						<Typography variant='caption'>Bill to</Typography>
+						<Typography variant='body1' gutterBottom>{email}</Typography>
+						<Typography variant='body1' gutterBottom>{name}</Typography>
+						<Typography variant='body1' gutterBottom>{address}</Typography>
 
-				<Typography variant='caption' gutterBottom>Amount Due</Typography>
-				<Typography variant='body1' gutterBottom>A${amount}</Typography>
+						<Typography variant='caption' gutterBottom>Amount Due</Typography>
+						<Typography variant='body1' gutterBottom>{amount}</Typography>
 
-				<Typography variant='caption' gutterBottom>Description</Typography>
-				<Typography variant='body1' gutterBottom>{description}</Typography>
+						<Typography variant='caption' gutterBottom>Description</Typography>
+						<Typography variant='body1' gutterBottom>{description}</Typography>
 
-				<Typography variant='caption' gutterBottom>Due Date</Typography>
-				<Typography variant='body1' gutterBottom>{formatUnixDate(payableBy)}</Typography>
-
-
-
+						<Typography variant='caption' gutterBottom>Due Date</Typography>
+						<Typography variant='body1' gutterBottom>{formatUnixDate(payableBy)}</Typography>
 					</div>
 
 					<div>
+						<Typography variant='caption' component='p' gutterBottom>Invoice #</Typography>
+						<Typography variant='body1' gutterBottom>{invoiceId}</Typography>
 
+						<Typography variant='caption' gutterBottom>Customer #</Typography>
+						<Typography variant='body1' gutterBottom>{customer}</Typography>
 
-				<Typography variant='caption' component='p' gutterBottom>Invoice #</Typography>
-				<Typography variant='body1' gutterBottom>{invoiceId}</Typography>
-
-				<Typography variant='caption' gutterBottom>Customer #</Typography>
-				<Typography variant='body1' gutterBottom>{customer}</Typography>
-
-				<Typography variant='caption' component='p' gutterBottom>Status</Typography>
-				<Chip className={classes.chip} label='open' />
+						<Typography variant='caption' component='p' gutterBottom>Status</Typography>
+						<Chip className={classes[`chip${status}`]} label={status} />
 					</div>
-
 				</div>
-
-
 
 			</Paper>
 			<div className={classes.ctaBtnContainer}>
-			<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
+				<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
 					<Button variant='contained' color='secondary' className={classes.backBtn}>
 						Go Back
 					</Button>
 				</Link>
-			<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
-					<Button variant='contained' color='secondary' className={classes.backBtn}>
-						Void
-					</Button>
-				</Link>
-			<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
-					<Button variant='contained' color='secondary' className={classes.backBtn}>
-						Update
-					</Button>
-				</Link>
-			<Link to={{pathname: invoicePdf}} target='_blank' underline='none' className={classes.ctaBtn}>
+
+				{status !== 'void' && (
+					<>
+						<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
+							<Button variant='contained' color='secondary' className={classes.backBtn} onClick={voidInvoice}>
+								Void
+						</Button>
+						</Link>
+
+						<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
+							<Button variant='contained' color='secondary' className={classes.backBtn}>
+								Update
+						</Button>
+						</Link>
+
+						<Link to={{ pathname: invoiceUrl }} target='_blank' underline='none' className={classes.ctaBtn}>
+							<Button variant='contained' color='secondary' className={classes.backBtn}>
+								Payment Link
+							</Button>
+						</Link>
+					</>
+				)}
+
+				<Link to={{ pathname: invoicePdf }} target='_blank' underline='none' className={classes.ctaBtn}>
 					<Button variant='contained' color='secondary' className={classes.backBtn}>
 						PDF
 					</Button>
 				</Link>
-			<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
-					<Button variant='contained' color='secondary' className={classes.backBtn}>
-						Payment Link
-					</Button>
-				</Link>
 			</div>
-			</div>
+		</div>
 	)
 }
 

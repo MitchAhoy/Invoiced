@@ -10,7 +10,7 @@ const invoiceSchema = new Schema({
     issueDate: Number,
     payableBy: Number,
     amount: Number,
-    paid: Boolean,
+    status: String,
     invoiceUrl: String,
     invoicePdf: String,
     _user: String

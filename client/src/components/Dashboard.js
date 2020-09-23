@@ -10,7 +10,6 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
 import InvoiceCard from './InvoiceCard'
-import InvoiceDetailedCard from './InvoiceDetailedCard'
 
 const useStyles = makeStyles((theme) => ({
 	fab: {
@@ -27,6 +26,7 @@ const Dashboard = () => {
 
 	const classes = useStyles()
 
+
 	return (
 		<Container>
 			<Typography variant='h3' gutterBottom>
@@ -36,15 +36,16 @@ const Dashboard = () => {
 			<Container>
 				{invoices && invoices.length > 0
 					? invoices.map(
-							({ email, description, amount, paid, _id, issuedDate, invoiceId }) => (
+							({ customerEmail, description, amount, paid, _id, issueDate, invoiceId, status }) => (
 								<InvoiceCard
 									key={_id}
 									invoiceId={invoiceId}
-									email={email}
+									customerEmail={customerEmail}
 									description={description}
 									amount={amount}
 									paid={paid}
-									issuedDate={issuedDate}
+									issueDate={issueDate}
+									status={status}
 								/>
 							)
 					  )

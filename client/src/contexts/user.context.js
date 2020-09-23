@@ -8,19 +8,20 @@ export const UserProvider = ({ children }) => {
 	const [invoices, setInvoices] = useState({})
 	const [customers, setCustomers] = useState({})
 
-	useEffect(() => {
-		const getUserData = async () => {
-			try {
-				const userProfile = await axios.get('/api/current_user')
-				if (userProfile) setUser(userProfile.data)
-				const userInvoices = await axios.get('/api/invoices')
-				if (userInvoices) setInvoices(userInvoices.data)
-				const userCustomers = await axios.get('/api/customers')
-				if (userCustomers) setCustomers(userCustomers.data) 
-			} catch (err) {
-				throw new Error(err)
-			}
+	const getUserData = async () => {
+		try {
+			const userProfile = await axios.get('/api/current_user')
+			if (userProfile) setUser(userProfile.data)
+			const userInvoices = await axios.get('/api/invoices')
+			if (userInvoices) setInvoices(userInvoices.data)
+			const userCustomers = await axios.get('/api/customers')
+			if (userCustomers) setCustomers(userCustomers.data) 
+		} catch (err) {
+			throw new Error(err)
 		}
+	}
+
+	useEffect(() => {
 		getUserData()
 	}, [])
 
@@ -39,7 +40,7 @@ export const UserProvider = ({ children }) => {
 	}, [user])
 
 	return (
-		<UserContext.Provider value={{ user, invoices, customers }}>
+		<UserContext.Provider value={{ user, invoices, customers, getUserData }}>
 			{children}
 		</UserContext.Provider>
 	)

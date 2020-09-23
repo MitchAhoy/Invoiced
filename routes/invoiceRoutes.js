@@ -30,7 +30,7 @@ module.exports = (app) => {
 				{
 				customer,
 				collection_method: 'send_invoice',
-				days_until_due: 30
+				due_date: new Date(payableBy)
 				}, 
 				{ stripeAccount: req.user.stripeAcct }
 			)
@@ -40,10 +40,10 @@ module.exports = (app) => {
 			const invoice = await new Invoice({
 				customer,
 				invoiceId: sendInvoice.id,
-				email: sendInvoice.customer_email,
+				customerEmail: sendInvoice.customer_email,
 				description,
 				amount,
-				paid: false,
+				status: sendInvoice.status,
 				issueDate: sendInvoice.created,
 				payableBy: sendInvoice.due_date,
 				invoiceUrl: sendInvoice.hosted_invoice_url,
@@ -51,7 +51,7 @@ module.exports = (app) => {
 				_user: req.user.id,
 			}).save()
 			res.send(invoice)
-			console.log(sendInvoice, invoice)
+			console.log(sendInvoice)
 		} catch (err) {
 			console.log(err)
 			res.status(400)
@@ -73,6 +73,29 @@ module.exports = (app) => {
 			return
 		}
 	})
+
+
+	// Void invoice
+
+	app.post('/api/invoices/:id/void', async (req, res) => {
+
+		const invoiceToVoid = req.params.id
+
+		try {
+			const voidInvoice = await stripe.invoices.voidInvoice(invoiceToVoid)
+			console.log(voidInvoice)
+
+			const updateInvoiceStatus = await Invoice.findOneAndUpdate({invoiceId: invoiceToVoid}, {status: voidInvoice.status}, {new: true}, (err, updated) => console.log(err, updated))
+		} catch (err) {
+			console.log(err)
+			res.status(400)
+			res.send({ error: err })
+			return
+		}
+		
+
+	})
+
 
 	// Get customers
 	app.get('/api/customers', async (req, res) => {

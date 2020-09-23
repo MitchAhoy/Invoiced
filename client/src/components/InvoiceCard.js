@@ -7,8 +7,8 @@ import {
 	Button,
 	Chip
 } from '@material-ui/core'
-import { useTheme } from '@material-ui/styles'
-import Moment from 'moment'
+import formatUnixDate from '../utils/formatUnixDate'
+import formatCurrency from '../utils/formatCurrency'
 
 import { Link } from 'react-router-dom'
 
@@ -23,47 +23,71 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: '1rem',
 		boxShadow: theme.boxShadow.lg,
 		[theme.breakpoints.down('xs')]: {
-			display: 'block',
+			justifyContent: 'flex-start',
+			display: 'block'
 		},
 	},
 	cardRight: {
 		display: 'flex',
 		flexDirection: 'row',
+		[theme.breakpoints.down('xs')]: {
+			flexDirection: 'row-reversed',
+			justifyContent: 'space-between',
+			alignItems: 'center'
+		}
 	},
-	invoiceAmount: {
+	invoiceStatus: {
 		margin: 'auto',
 		padding: '0 12px',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		[theme.breakpoints.down('xs')]: {
+			margin: '0.5rem 0rem',
+			padding: '0rem'
+		}
 	},
 	moreBtn: {
 		textDecoration: 'none'
 	},
-	chip: {
-		background: theme.palette.invoiceStatus.paid, 
+	chipvoid: {
+		background: theme.palette.invoiceStatus.void,
+		color: '#fff',
+		[theme.breakpoints.down('xs')]: {
+			margin: '0px'
+		}
+	},
+	chipopen: {
+		background: theme.palette.invoiceStatus.open,
+		color: '#fff'
+	},
+	chippaid: {
+		background: theme.palette.invoiceStatus.paid,
+		color: '#fff'
+	},
+	chipoverdue: {
+		background: theme.palette.invoiceStatus.overdue,
 		color: '#fff'
 	}
 }))
 
-const InvoiceCard = ({ email, description, issuedDate, amount, paid, invoiceId }) => {
+const InvoiceCard = ({ customerEmail, description, issueDate, amount, status, invoiceId }) => {
 	const classes = useStyles()
-	const theme = useTheme()
-
-	const formatCurrency = new Intl.NumberFormat('en-AU', {style: 'currency', currency: 'AUD'}).format(amount)
 
 	return (
 		<Paper className={classes.invoiceCardContainer} elevation={3}>
 			<CssBaseline />
 			<div className={classes.cardContainer}>
-				<Typography variant='body1'>{email}</Typography>
-				<Typography fontWeight='fontWightBold' variant='body1'>{description}</Typography>
+				<Typography variant='body1' gutterBottom>{customerEmail}</Typography>
+				<Typography fontWeight='fontWeightBold' variant='body1'>{description}</Typography>
 				<Typography variant='caption'>
-					{Moment(issuedDate).format('ll')}
+					Issued: {formatUnixDate(issueDate)}
 				</Typography>
+				<Typography variant='body1' m={1}>{formatCurrency(amount)}</Typography>
 			</div>
 			<div  className={classes.cardRight}>
-				<div className={classes.invoiceAmount}>
-					<Chip label={paid ? `${formatCurrency} Paid` : `${formatCurrency} Unpaid`} className={classes.chip} />
+				<div className={classes.invoiceStatus}>
+					<Chip label={status} className={classes[`chip${status}`]} />
 				</div>
+		
 				<div>
 					<Link className={classes.moreBtn} to={`/invoice/${invoiceId}`}><Button variant='contained' color='secondary'>More</Button></Link>
 				</div>

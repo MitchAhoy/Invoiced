@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
 	Typography,
@@ -53,13 +53,11 @@ const FormInput = ({
 		handleDateChanged,
 		formInfo: { fields, title },
 		customers,
-		history,
-		dispatch
+		history
 	},
 }) => {
 	const classes = useStyles()
-
-	const renderFields = fields.map(({ label, inputFor, type, value }) => {
+	const renderFields = fields.map(({ label, inputFor, type }) => {
 		switch (type) {
 			case 'number':
 				return (
@@ -89,38 +87,38 @@ const FormInput = ({
 						value={inputDetails[inputFor]}
 						variant='outlined'
 						autoComplete='off'
-						InputProps={{startAdornment: <InputAdornment variant='outlined' position="start">$</InputAdornment>}}
+						InputProps={{ startAdornment: <InputAdornment variant='outlined' position="start">$</InputAdornment> }}
 					/>
 				)
 			case 'text':
 				return (
 					<TextField
-					key={inputFor}
-					label={label}
-					name={inputFor}
-					className={classes.formInput}
-					type={type}
-					required
-					onChange={handleTypedChange}
-					value={inputDetails[inputFor]}
-					variant='outlined'
-					autoComplete='off'
-				/>
+						key={inputFor}
+						label={label}
+						name={inputFor}
+						className={classes.formInput}
+						type={type}
+						required
+						onChange={handleTypedChange}
+						value={inputDetails[inputFor]}
+						variant='outlined'
+						autoComplete='off'
+					/>
 				)
 			case 'email':
 				return (
 					<TextField
-					key={inputFor}
-					label={label}
-					name={inputFor}
-					className={classes.formInput}
-					type={type}
-					required
-					onChange={handleTypedChange}
-					value={inputDetails[inputFor]}
-					variant='outlined'
-					autoComplete='off'
-				/>
+						key={inputFor}
+						label={label}
+						name={inputFor}
+						className={classes.formInput}
+						type={type}
+						required
+						onChange={handleTypedChange}
+						value={inputDetails[inputFor]}
+						variant='outlined'
+						autoComplete='off'
+					/>
 				)
 			case 'select':
 				return (
@@ -146,13 +144,13 @@ const FormInput = ({
 								</Select>
 							</FormControl>
 						) : (
-							<TextField
-								variant='outlined'
-								disabled
-								value='You must first create a customer'
-								className={classes.noCustomers}
-							></TextField>
-						)}
+								<TextField
+									variant='outlined'
+									disabled
+									value='You must first create a customer'
+									className={classes.noCustomers}
+								></TextField>
+							)}
 						<Link to='/create/customer' className={classes.createCustomerLink}>
 							<Button
 								variant='contained'
@@ -170,9 +168,11 @@ const FormInput = ({
 						label='Payable by'
 						placeholder='2018/10/10'
 						format='yyyy/MM/dd'
-						value={new Date()}
+						value={inputDetails.payableBy ? inputDetails.payableBy : new Date()}
 						inputVariant='outlined'
 						onChange={date => handleDateChanged(date)}
+						disablePast={true}
+						autoOk={true}
 					/>
 				)
 		}
@@ -188,8 +188,8 @@ const FormInput = ({
 			<form className={classes.form} onSubmit={handleFormReview}>
 				{renderFields}
 				<div className={classes.formButtons}>
-						<Button variant='contained' color='secondary' onClick={() => history.goBack()}>
-							Cancel
+					<Button variant='contained' color='secondary' onClick={() => history.goBack()}>
+						Cancel
 						</Button>
 					<Button variant='contained' color='primary' type='submit'>
 						Review
