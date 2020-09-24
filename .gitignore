@@ -19,8 +19,9 @@
 .env.production.local
 
 #keys
-dev.js
 prod.js
+dev.js
+
 
 npm-debug.log*
 yarn-debug.log*
