@@ -6,7 +6,6 @@ const Stripe = require('stripe')
 const stripe = Stripe(stripeSecretKey)
 
 module.exports = (app) => {
-	// Save invoice to database
 	app.post('/api/new_invoice', async (req, res) => {
 		try {
 			const { customer, description, amount, payableBy } = req.body
@@ -60,7 +59,6 @@ module.exports = (app) => {
 		}
 	})
 
-	// Get invoices
 	app.get('/api/invoices', async (req, res) => {
 		if (!req.user) return
 		try {
@@ -73,9 +71,6 @@ module.exports = (app) => {
 			return
 		}
 	})
-
-
-	// Void invoice
 
 	app.post('/api/invoices/:id/void', async (req, res) => {
 
@@ -96,8 +91,6 @@ module.exports = (app) => {
 
 	})
 
-
-	// Get customers
 	app.get('/api/customers', async (req, res) => {
 		try {
 			const customers = await Customer.find({ _user: req.user._id })
