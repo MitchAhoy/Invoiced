@@ -1,7 +1,6 @@
 import React, { useContext, useReducer } from 'react'
 import { UserContext } from '../../contexts/user.context'
 import { Paper, makeStyles, CssBaseline } from '@material-ui/core'
-import { useTheme } from '@material-ui/styles'
 import { formFields, formInitalState, formReducer } from './formData'
 import FormInput from './FormInput'
 import FormReview from './FormReview'

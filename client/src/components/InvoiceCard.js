@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import {
 	CssBaseline,
 	Paper,
@@ -96,4 +96,4 @@ const InvoiceCard = ({ customerEmail, description, issueDate, amount, status, in
 	)
 }
 
-export default InvoiceCard
+export default memo(InvoiceCard)

@@ -73,6 +73,8 @@ export const formReducer = (state, action) => {
                         payableBy: action.date
                     }
                 }
+            default: 
+                return state
             }
         
     }

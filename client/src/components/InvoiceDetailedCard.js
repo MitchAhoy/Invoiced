@@ -4,6 +4,7 @@ import { makeStyles, Button, Typography, Paper, Chip } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import formatUnixDate from '../utils/formatUnixDate'
 import axios from 'axios'
+import formatCurrency from '../utils/formatCurrency'
 
 
 
@@ -96,10 +97,13 @@ const InvoiceDetailedCard = ({
 						<Typography variant='body1' gutterBottom>{address}</Typography>
 
 						<Typography variant='caption' gutterBottom>Amount Due</Typography>
-						<Typography variant='body1' gutterBottom>{amount}</Typography>
+						<Typography variant='body1' gutterBottom>{formatCurrency(amount)}</Typography>
 
 						<Typography variant='caption' gutterBottom>Description</Typography>
 						<Typography variant='body1' gutterBottom>{description}</Typography>
+
+						<Typography variant='caption' gutterBottom>Issue Date</Typography>
+						<Typography variant='body1' gutterBottom>{formatUnixDate(issueDate)}</Typography>
 
 						<Typography variant='caption' gutterBottom>Due Date</Typography>
 						<Typography variant='body1' gutterBottom>{formatUnixDate(payableBy)}</Typography>

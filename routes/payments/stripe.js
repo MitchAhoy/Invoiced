@@ -4,6 +4,7 @@ const stripe = Stripe(stripeSecretKey)
 const mongoose = require('mongoose')
 const User = mongoose.model('user')
 const Customer = mongoose.model('customer')
+const Invoice = mongoose.model('invoice')
 const bodyParser = require('body-parser')
 
 module.exports = (app) => {
@@ -57,9 +58,30 @@ module.exports = (app) => {
 	app.post(
 		'/stripe/webhooks',
 		bodyParser.raw({ type: 'application/json' }),
-		(req, res) => {
-			res.send({})
+		async (req, res) => {
+			try {
+				const { type } = req.body
+
+				switch(type) {
+					case 'invoice.paid' : {
+						await Invoice.findOneAndUpdate(
+							{ invoiceId: req.body.data.object.id },
+							{ status: req.body.data.object.status },
+							{ new: true },
+							(err, updated) => console.log(err, updated)
+						)
+					}
+				}
+				res.status(200)
+				res.send({})
+			} catch (err) {
+				console.log(err)
+				res.status(400)
+				res.send({ error: err })
+				return
+			}
 		}
+
 	)
 
 	app.post('/stripe/stripe_verification', async (req, res) => {

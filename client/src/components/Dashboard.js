@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, memo } from 'react'
 import { UserContext } from '../contexts/user.context'
 import {
 	Container,
@@ -6,8 +6,12 @@ import {
 	Typography,
 	makeStyles,
 	Fab,
+	IconButton
 } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
+import {
+	Add as AddIcon, 
+	FilterList as FilterListIcon
+} from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import InvoiceCard from './InvoiceCard'
 
@@ -17,21 +21,31 @@ const useStyles = makeStyles((theme) => ({
 		right: theme.spacing(2),
 		bottom: theme.spacing(2),
 	},
+	dashboardHead: {
+		display: 'flex',
+		justifyContent: 'space-between'
+	}
 }))
 
 const Dashboard = () => {
-	const { invoices } = useContext(UserContext)
+	const { invoices, getUserData } = useContext(UserContext)
 
+	useEffect(() => {
+		getUserData()
+	}, [])
 
+	console.log('dashboard render')
 
 	const classes = useStyles()
 
 
 	return (
 		<Container>
-			<Typography variant='h3' gutterBottom>
-				Recent Invoices
-			</Typography>
+
+					<Typography variant='h3' gutterBottom>
+						Your invoices
+					</Typography>
+
 			<CssBaseline />
 			<Container>
 				{invoices && invoices.length > 0
@@ -66,4 +80,4 @@ const Dashboard = () => {
 	)
 }
 
-export default Dashboard
+export default memo(Dashboard)
