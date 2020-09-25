@@ -77,7 +77,7 @@ module.exports = (app) => {
 		const invoiceToVoid = req.params.id
 
 		try {
-			const voidInvoice = await stripe.invoices.voidInvoice(invoiceToVoid)
+			const voidInvoice = await stripe.invoices.voidInvoice(invoiceToVoid, { stripeAccount: req.user.stripeAcct })
 			console.log(voidInvoice)
 
 			const updateInvoiceStatus = await Invoice.findOneAndUpdate({invoiceId: invoiceToVoid}, {status: voidInvoice.status}, {new: true}, (err, updated) => console.log(err, updated))
