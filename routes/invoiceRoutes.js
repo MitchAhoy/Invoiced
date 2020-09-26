@@ -78,9 +78,8 @@ module.exports = (app) => {
 
 		try {
 			const voidInvoice = await stripe.invoices.voidInvoice(invoiceToVoid, { stripeAccount: req.user.stripeAcct })
-			console.log(voidInvoice)
-
 			const updateInvoiceStatus = await Invoice.findOneAndUpdate({invoiceId: invoiceToVoid}, {status: voidInvoice.status}, {new: true}, (err, updated) => console.log(err, updated))
+			res.send(updateInvoiceStatus)
 		} catch (err) {
 			console.log(err)
 			res.status(400)
