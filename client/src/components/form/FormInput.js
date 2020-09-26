@@ -85,9 +85,9 @@ const FormInput = ({
 						required
 						onChange={handleTypedChange}
 						value={inputDetails[inputFor]}
-						variant='outlined'
+						// variant='outlined'
 						autoComplete='off'
-						InputProps={{ startAdornment: <InputAdornment variant='outlined' position="start">$</InputAdornment> }}
+						InputProps={{ startAdornment: <InputAdornment variant='outlined' position="start">$</InputAdornment>}}
 					/>
 				)
 			case 'text':
@@ -135,9 +135,10 @@ const FormInput = ({
 									label={label}
 									onChange={handleTypedChange}
 									name={inputFor}
+									
 								>
 									{customers.map(({ name, email, stripeID }) => (
-										<MenuItem key={name} value={stripeID}>
+										<MenuItem key={stripeID} value={stripeID}>
 											{`${name} - ${email}`}
 										</MenuItem>
 									))}
@@ -175,6 +176,8 @@ const FormInput = ({
 						autoOk={true}
 					/>
 				)
+			default:
+				return 'unidentified input'
 		}
 	})
 

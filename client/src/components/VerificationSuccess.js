@@ -9,7 +9,7 @@ const VerificationSuccess = ({location: {search}}) => {
 
     const verifyAccount = async () => {
         try {
-            const response = await axios.post('/stripe/stripe_verification', {acct})
+            return await axios.post('/stripe/stripe_verification', {acct})
         } catch (err) {
 			throw new Error(err)
         }

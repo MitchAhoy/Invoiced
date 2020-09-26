@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
         if (user.verified || user.verified === undefined) return
 		const getOnboardingLink = async () => {
 			try {
-				const onboardingLink = await axios.post(
+				return await axios.post(
 					'/stripe/create_account_hosted'
 				)
 			} catch (err) {

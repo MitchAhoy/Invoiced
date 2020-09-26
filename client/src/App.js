@@ -8,7 +8,10 @@ import InvoiceDetailedCard from './components/InvoiceDetailedCard'
 import Form from './components/form/Form'
 
 const useStyles = makeStyles((theme) => ({
-  appBarSpacer: theme.mixins.toolbar
+  appBarSpacer: theme.mixins.toolbar,
+  appContainer: {
+	  height: '100vh'
+  }
 }))
 
 const App = () => {
@@ -16,7 +19,7 @@ const App = () => {
   const classes = useStyles()
 
 	return (
-		<div className='App'>
+		<div className={classes.appContainer}>
 			<nav>
 				<Navbar />
 			</nav>

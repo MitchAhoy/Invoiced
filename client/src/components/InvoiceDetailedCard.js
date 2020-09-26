@@ -79,10 +79,18 @@ const InvoiceDetailedCard = ({
 	} = currentInvoice
 	const { name, address, email } = currentCustomer
 
-	const voidInvoice = () => {
+	const voidInvoice = async () => {
 		const confirmation = window.confirm('Are you sure you want to void this invoice? This action can not be undone.')
-		if (confirmation) axios.post(`/api/invoices/${invoiceId}/void`)
-		getUserData()
+		if (confirmation) {
+			try {
+				const executeVoid = await axios.post(`/api/invoices/${invoiceId}/void`)
+				const refreshData = await getUserData()
+			} catch (err) {
+				throw new Error(err)
+			}
+			
+		}
+		
 	}
 
 	return (
@@ -131,17 +139,11 @@ const InvoiceDetailedCard = ({
 
 				{status !== 'void' && (
 					<>
-						<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
-							<Button variant='contained' color='secondary' className={classes.backBtn} onClick={voidInvoice}>
+					<div>
+						<Button variant='contained' color='secondary' className={classes.backBtn} onClick={voidInvoice}>
 								Void
 						</Button>
-						</Link>
-
-						<Link to={'/dashboard'} underline='none' className={classes.ctaBtn}>
-							<Button variant='contained' color='secondary' className={classes.backBtn}>
-								Update
-						</Button>
-						</Link>
+					</div>
 
 						<Link to={{ pathname: invoiceUrl }} target='_blank' underline='none' className={classes.ctaBtn}>
 							<Button variant='contained' color='secondary' className={classes.backBtn}>

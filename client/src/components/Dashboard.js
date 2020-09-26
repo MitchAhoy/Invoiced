@@ -6,14 +6,12 @@ import {
 	Typography,
 	makeStyles,
 	Fab,
-	IconButton
 } from '@material-ui/core'
 import {
-	Add as AddIcon, 
-	FilterList as FilterListIcon
+	Add as AddIcon
 } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
-import InvoiceCard from './InvoiceCard'
+import InvoiceTable from './InvoiceTable'
 
 const useStyles = makeStyles((theme) => ({
 	fab: {
@@ -33,37 +31,19 @@ const Dashboard = () => {
 	useEffect(() => {
 		getUserData()
 	}, [])
-
-	console.log('dashboard render')
-
 	const classes = useStyles()
 
 
 	return (
 		<Container>
 
-					<Typography variant='h3' gutterBottom>
-						Your invoices
+			<Typography variant='h3' gutterBottom>
+				Your invoices
 					</Typography>
 
 			<CssBaseline />
 			<Container>
-				{invoices && invoices.length > 0
-					? invoices.map(
-							({ customerEmail, description, amount, paid, _id, issueDate, invoiceId, status }) => (
-								<InvoiceCard
-									key={_id}
-									invoiceId={invoiceId}
-									customerEmail={customerEmail}
-									description={description}
-									amount={amount}
-									paid={paid}
-									issueDate={issueDate}
-									status={status}
-								/>
-							)
-					  )
-					: 'Create your first invoice!'}
+				{invoices.length > 0 ? <InvoiceTable invoices={invoices} /> : 'create an invoice'}
 			</Container>
 
 

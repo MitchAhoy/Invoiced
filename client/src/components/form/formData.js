@@ -4,7 +4,7 @@ export const formFields = {
     invoice: {
         title: 'Create A New Invoice 🧾',
         fields: [
-            {label: 'Customer', inputFor: 'customer', type: 'select', value: ''},
+            {label: 'Select A Customer', inputFor: 'customer', type: 'select', value: ''},
             {label: 'Amount', inputFor: 'amount', type: 'currency', value: 0},
             {label: 'Due Date', inputFor: 'payableBy', type: 'selectDate', value: ''},
             {label: 'Description', inputFor: 'description', type: 'text', value: ''}
@@ -51,7 +51,6 @@ export const formReducer = (state, action) => {
             }
         case 'SUBMIT_FORM':
             action.evt.preventDefault()
-            
             action.formInfo.submit(state.inputDetails)
             action.history.push('/dashboard')
             return {
