@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, makeStyles, Button, Paper, Toolbar, Select, IconButton, MenuItem, FormControl, InputLabel } from '@material-ui/core'
-import { FilterList as FilterListIcon } from '@material-ui/icons'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, makeStyles, Button, Paper, Toolbar, Select, IconButton, MenuItem, FormControl, InputLabel, TextField } from '@material-ui/core'
+import { Clear as ClearIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import formatUnixDate from '../utils/formatUnixDate'
 import formatCurrency from '../utils/formatCurrency'
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        marginBottom: '2rem'
+    },
     tableContainer: {
         boxShadow: theme.boxShadow.lg,
     },
@@ -45,6 +48,13 @@ const useStyles = makeStyles((theme) => ({
             padding: '0rem'
         }
     },
+    filterStatus: {
+        width: '10rem'
+    },
+    filterBar: {
+        justifyContent: 'space-between',
+        marginBottom: '1rem'
+    }
 }))
 
 const tableHeaders = ['Emailed To', 'Issue Date', 'Due Date', 'Amount', 'Status', '']
@@ -52,36 +62,77 @@ const filterOptions = ['open', 'paid', 'void']
 
 const InvoiceTable = ({ invoices }) => {
     const classes = useStyles()
-    const [filterStatus, setFilterStatus] = useState('')
+    const [filter, setFilter] = useState({active: false})
     const [listToRender, setListToRender] = useState(invoices)
 
+    const updateFilter = () => {
+        const filteredInvoices = invoices.filter((inv) => {
+            const emailMatch = filter.customerEmail && inv.customerEmail.toLowerCase().includes(filter.customerEmail.toLowerCase())
+            const statusMatch = inv.status === filter.status
+            return emailMatch || statusMatch
+            // for (let key in filter) {
+            //     if (inv[key] === undefined || inv[key] != filter[key]) {
+            //         return false
+            //     }
+            //     return true
+            // }
+        })
+        console.log(filteredInvoices)
+        setListToRender(filteredInvoices)
+    }
+
     useEffect(() => {
-        if (filterStatus) {
-            const filterInvoices = invoices.filter(i => i.status === filterStatus)
-            setListToRender(filterInvoices)
+        if (filter.active) {
+            updateFilter()
         }
 
-    }, [filterStatus])
+    }, [filter])
+
+    const clearFilter = () => {
+        setFilter({active: false})
+        setListToRender(invoices)
+    }
 
     return (
-        <div>
-            <Toolbar>
+        <div className={classes.root}>
+            <Toolbar className={classes.filterBar}>
 
+            <TextField
+						label='Search Emails'
+						name='filter-search'
+						type='text'
+						value={filter.customerEmail}
+                        variant='outlined'
+                        onChange={(evt) => setFilter({...filter, customerEmail: evt.target.value, active: true})}
+					/>
+                <div>
                 <FormControl
                     variant='outlined'
+                    className={classes.filterStatus}
                 >
-                    <InputLabel id='filter-status'>Filter</InputLabel>
+                    <InputLabel id='filter-status'>Status</InputLabel>
                     <Select
                         labelId={'filter-status-label'}
                         id='filter-status'
                         label='filter-status'
-                        onChange={(evt) => setFilterStatus(evt.target.value)}
-                        name='filter-status'
+                        onChange={(evt) => setFilter({...filter, status: evt.target.value, active: true})}
+                        name={filter.status || 'status'}
+                        value={filter.status}
 
                     >
                         {filterOptions.map((status) => <MenuItem key={status} value={status}>{status}</MenuItem>)}
                     </Select>
+
+
+
                 </FormControl>
+
+            {filter.active && (                
+                <IconButton>
+                    <ClearIcon onClick={clearFilter}/>
+                </IconButton>
+                )}
+            </div>
             </Toolbar>
             <TableContainer component={Paper} className={classes.tableContainer}>
                 <Table>
