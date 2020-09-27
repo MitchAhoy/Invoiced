@@ -62,77 +62,95 @@ const filterOptions = ['open', 'paid', 'void']
 
 const InvoiceTable = ({ invoices }) => {
     const classes = useStyles()
-    const [filter, setFilter] = useState({active: false})
+    const [isFiltering, setIsFiltering] = useState(false)
+    const [filter, setFilter] = useState({})
     const [listToRender, setListToRender] = useState(invoices)
 
+    const handleStatusFilter = (evt) => { setIsFiltering(true); setFilter({ ...filter, status: evt.target.value }) }
+    const handleSearchFilter = (evt) => { setIsFiltering(true); setFilter({ ...filter, customerEmail: evt.target.value }); console.log(evt.target) }
+
     const updateFilter = () => {
-        const filteredInvoices = invoices.filter((inv) => {
-            const emailMatch = filter.customerEmail && inv.customerEmail.toLowerCase().includes(filter.customerEmail.toLowerCase())
-            const statusMatch = inv.status === filter.status
-            return emailMatch || statusMatch
-            // for (let key in filter) {
-            //     if (inv[key] === undefined || inv[key] != filter[key]) {
-            //         return false
-            //     }
-            //     return true
-            // }
+        const filterValues = Object.values(filter)
+
+        filterValues.forEach((arg) => {
+            if (arg === '' || arg === ' ' || arg === undefined) return true
         })
-        console.log(filteredInvoices)
+
+        const filteredInvoices = invoices.filter(invoice => {
+            let validInvoice = true
+
+            for (const [key, value] of Object.entries(filter)) {
+                if (Array.isArray(value)) {
+                    if (!value.toLowerCase().includes(invoice[key]).toLowerCase()) {
+                        validInvoice = false
+                    }
+                }
+                else if (typeof value === 'function') {
+                    if (!value(invoice[key])) {
+                        validInvoice = false
+                    }
+                }
+                else if (invoice[key].toLowerCase().includes(filter[key].toLowerCase())) validInvoice = true
+                else {
+                    if (value !== invoice[key]) validInvoice = false
+                }
+            }
+
+            return validInvoice
+        })
+
         setListToRender(filteredInvoices)
     }
 
     useEffect(() => {
-        if (filter.active) {
+        if (isFiltering) {
             updateFilter()
         }
 
     }, [filter])
 
     const clearFilter = () => {
-        setFilter({active: false})
+        setFilter({})
+        setIsFiltering(false)
         setListToRender(invoices)
     }
 
     return (
         <div className={classes.root}>
             <Toolbar className={classes.filterBar}>
-
-            <TextField
-						label='Search Emails'
-						name='filter-search'
-						type='text'
-						value={filter.customerEmail}
-                        variant='outlined'
-                        onChange={(evt) => setFilter({...filter, customerEmail: evt.target.value, active: true})}
-					/>
-                <div>
-                <FormControl
+                <TextField
+                    label='Search Emails'
+                    name='filter-search'
+                    type='text'
+                    value={filter.customerEmail || ''}
                     variant='outlined'
-                    className={classes.filterStatus}
-                >
-                    <InputLabel id='filter-status'>Status</InputLabel>
-                    <Select
-                        labelId={'filter-status-label'}
-                        id='filter-status'
-                        label='filter-status'
-                        onChange={(evt) => setFilter({...filter, status: evt.target.value, active: true})}
-                        name={filter.status || 'status'}
-                        value={filter.status}
-
+                    onChange={handleSearchFilter}
+                />
+                <div>
+                    <FormControl
+                        variant='outlined'
+                        className={classes.filterStatus}
                     >
-                        {filterOptions.map((status) => <MenuItem key={status} value={status}>{status}</MenuItem>)}
-                    </Select>
+                        <InputLabel id='filter-status'>Status</InputLabel>
+                        <Select
+                            labelId={'filter-status-label'}
+                            id='filter-status'
+                            label='filter-status'
+                            onChange={handleStatusFilter}
+                            name={filter.status || 'status'}
+                            value={filter.status || ''}
 
+                        >
+                            {filterOptions.map((status) => <MenuItem key={status} value={status}>{status}</MenuItem>)}
+                        </Select>
+                    </FormControl>
 
-
-                </FormControl>
-
-            {filter.active && (                
-                <IconButton>
-                    <ClearIcon onClick={clearFilter}/>
-                </IconButton>
-                )}
-            </div>
+                    {isFiltering && (
+                        <IconButton>
+                            <ClearIcon onClick={clearFilter} />
+                        </IconButton>
+                    )}
+                </div>
             </Toolbar>
             <TableContainer component={Paper} className={classes.tableContainer}>
                 <Table>

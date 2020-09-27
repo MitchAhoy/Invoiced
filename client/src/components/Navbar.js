@@ -16,6 +16,7 @@ import {
 import Alert from '@material-ui/lab/Alert'
 import { CreditCard } from '@material-ui/icons'
 import { NavLink } from 'react-router-dom'
+import SignInModal from './SignInModal'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +73,7 @@ const Navbar = () => {
 	const classes = useStyles()
 
 	const [anchorEl, setAnchorEl] = useState(null)
+	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const handleMenuClick = (evt) => setAnchorEl(evt.currentTarget)
 	const handleMenuClose = () => setAnchorEl(null)
@@ -134,9 +136,6 @@ const Navbar = () => {
 								}}
 							>
 								<MenuItem onClick={handleMenuClose} className={classes.popoverText}>
-									Settings
-								</MenuItem>
-								<MenuItem onClick={handleMenuClose} className={classes.popoverText}>
 									<Link
 										underline='none'
 										href='/api/logout'
@@ -151,13 +150,15 @@ const Navbar = () => {
 						<Button
 							color='secondary'
 							variant='contained'
-							href='/auth/google'
+							onClick={() => setIsModalOpen(!isModalOpen)}
 						>
 							Login
 						</Button>
 					)}
 				</Toolbar>
 			</AppBar>
+
+			{isModalOpen && <SignInModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>}
 		</>
 	)
 }

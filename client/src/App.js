@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles, Container } from '@material-ui/core'
 import Navbar from './components/Navbar'
 import Dashboard from './components/Dashboard'
+import Home from './components/Home'
 import VerificationSuccess from './components/VerificationSuccess'
 import { Route, Switch } from 'react-router-dom'
 import InvoiceDetailedCard from './components/InvoiceDetailedCard'
@@ -27,6 +28,7 @@ const App = () => {
 				<Container>
 
 					<Switch>
+						<Route exact path='/' component={Home} />
 						<Route exact path='/verification-success' component={VerificationSuccess} />
 						<Route exact path='/dashboard' component={Dashboard} />
 						<Route exact path='/create/:formFor' component={Form} />

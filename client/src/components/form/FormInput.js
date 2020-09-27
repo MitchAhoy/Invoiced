@@ -85,9 +85,10 @@ const FormInput = ({
 						required
 						onChange={handleTypedChange}
 						value={inputDetails[inputFor]}
-						// variant='outlined'
+						variant='outlined'
+						pattern='[0-9]{10}'
 						autoComplete='off'
-						InputProps={{ startAdornment: <InputAdornment variant='outlined' position="start">$</InputAdornment>}}
+						InputProps={{ startAdornment: <InputAdornment variant='outlined' position="start">$</InputAdornment>, endAdornment: <InputAdornment variant='outlined' position="start">.00</InputAdornment>}}
 					/>
 				)
 			case 'text':
