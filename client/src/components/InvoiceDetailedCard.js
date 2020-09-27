@@ -137,7 +137,7 @@ const InvoiceDetailedCard = ({
 					</Button>
 				</Link>
 
-				{status !== 'void' && (
+				{status === 'open' && (
 					<>
 					<div>
 						<Button variant='contained' color='secondary' className={classes.backBtn} onClick={voidInvoice}>

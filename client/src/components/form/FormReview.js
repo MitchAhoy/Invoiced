@@ -6,6 +6,7 @@ import {
 	Button,
 	CssBaseline,
 } from '@material-ui/core'
+import formatDate from '../../utils/formatDate'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +38,7 @@ const FormReview = ({formInfo: {fields, title}, formData: {inputDetails, handleF
             className={classes.formInput}
             type={type}
 			required
-			value={inputDetails[inputFor]}
+			value={type !== 'selectDate' ? inputDetails[inputFor] : formatDate(inputDetails[inputFor])}
 			variant='outlined'
 			disabled
 		/>

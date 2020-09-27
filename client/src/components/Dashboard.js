@@ -39,7 +39,7 @@ const Dashboard = () => {
 
 			<Typography variant='h3' gutterBottom>
 				Your invoices
-					</Typography>
+			</Typography>
 
 			<CssBaseline />
 			<Container>

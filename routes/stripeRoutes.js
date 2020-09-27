@@ -1,4 +1,4 @@
-const { stripeSecretKey } = require('../../config/keys')
+const { stripeSecretKey } = require('../config/keys')
 const Stripe = require('stripe')
 const stripe = Stripe(stripeSecretKey)
 const mongoose = require('mongoose')
@@ -129,10 +129,5 @@ module.exports = (app) => {
 			return
 		}
 	})
-
-	app.post('/stripe/create_invoice', async (req, res) => {
-
-	})
-
 
 }

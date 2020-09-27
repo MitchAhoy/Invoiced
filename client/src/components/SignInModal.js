@@ -1,7 +1,6 @@
 import React from 'react'
-import { Modal, Backdrop, Fade, makeStyles, Typography, IconButton } from '@material-ui/core'
+import { Modal, Backdrop, Fade, makeStyles, Typography, IconButton, Link } from '@material-ui/core'
 import signInWithGoogle from '../imgs/signInWithGoogle.png'
-import { Link } from 'react-router-dom'
 import { Clear as ClearIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
@@ -49,8 +48,8 @@ const SignInModal = ({ isModalOpen, setIsModalOpen }) => {
                         <div>
                             <Typography variant='h5' gutterBottom>Sign in to Invoiced</Typography>
                             <Typography variant='body1' gutterBottom>Login to access all of your invoices.</Typography>
-                            <Link to={{ pathname: '/auth/google' }}>
-                                <img src={signInWithGoogle} className={classes.signInButton} />
+                            <Link href='/auth/google'>
+                                <img src={signInWithGoogle} className={classes.signInButton} alt='sign in with google button' />
                             </Link>
                         </div>
                     </div>

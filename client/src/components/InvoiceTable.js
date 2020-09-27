@@ -156,13 +156,13 @@ const InvoiceTable = ({ invoices }) => {
                 <Table>
                     <TableHead className={classes.tableHead}>
                         <TableRow>
-                            {tableHeaders.map((col) => <TableCell className={classes.tableHeadCell}>{col}</TableCell>)}
+                            {tableHeaders.map((col) => <TableCell key={col} className={classes.tableHeadCell}>{col}</TableCell>)}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {listToRender.map(({ customerEmail, issueDate, payableBy, amount, status, invoiceId }) => {
                             return (
-                                <TableRow hover>
+                                <TableRow hover key={invoiceId}>
                                     <TableCell>{customerEmail}</TableCell>
                                     <TableCell>{formatUnixDate(issueDate)}</TableCell>
                                     <TableCell>{formatUnixDate(payableBy)}</TableCell>

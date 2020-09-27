@@ -24,9 +24,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 require('./routes/authRoutes')(app)
-require('./routes/testRoutes')(app)
 require('./routes/invoiceRoutes')(app)
-require('./routes/payments/stripe')(app)
+require('./routes/stripeRoutes')(app)
 
 
 if (process.env.NODE_ENV === 'production') {

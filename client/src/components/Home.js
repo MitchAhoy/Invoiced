@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {ReactComponent as InvoiceHeroImg} from '../imgs/InvoiceHero.svg'
 import dashboardImg from '../imgs/dashboardImg.png'
 import detailedCardImg from '../imgs/detailedCardImg.png'
@@ -10,6 +10,7 @@ import {
     Button,
 	makeStyles,
 } from '@material-ui/core'
+import SignInModal from './SignInModal'
 
 const useStyles = makeStyles((theme) => ({
     homeContainer: {
@@ -85,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
 
     const classes = useStyles()
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     return (
         <Container className={classes.homeContainer}>
@@ -92,8 +94,8 @@ const Home = () => {
             <div className={classes.headerLeft}>
                 <Typography variant='h3' gutterBottom>Send invoices fast and receive payments even faster.</Typography>
                 <Typography variant='body1' gutterBottom className={classes.headerDescription}>The all-in-one platform for invoice management</Typography>
-                <Button variant='contained' color='secondary'>Get started</Button>
-                <img src={poweredByStripeImg} className={classes.stripeBadge}/>
+                <Button variant='contained' color='secondary' onClick={() => setIsModalOpen(!isModalOpen)}>Get started</Button>
+                <img src={poweredByStripeImg} className={classes.stripeBadge} alt='powered by stripe'/>
             </div>
             <div>
                 <InvoiceHeroImg className={classes.invoiceHeroImg} />
@@ -101,7 +103,7 @@ const Home = () => {
         </section>
 
         <section className={classes.dashboardSection}>
-        <img src={dashboardImg} className={classes.img}/>
+        <img src={dashboardImg} className={classes.img} alt='invoiced dashboard'/>
         <div>
             <Typography variant='h4' gutterBottom>Intuative UI</Typography>
             <Typography variant='body1'>An easy to use dashboard to track your latest invoices and payments.</Typography>
@@ -112,11 +114,11 @@ const Home = () => {
             <Typography variant='h4' gutterBottom>Full control</Typography>
             <Typography variant='body1'>Track and control individual invoices so you can spend less time on accounting and more time on your business.</Typography>
             </div>
-            <img src={detailedCardImg} className={classes.img}/>
+            <img src={detailedCardImg} className={classes.img} alt='invoice card with invoice details'/>
         </section>
 
         <section className={classes.stripeSection}>
-            <img src={stripeImg} classname={classes.img}/>
+            <img src={stripeImg} classname={classes.img} alt='stripe logo'/>
             <div>
             <Typography variant='h4' gutterBottom>Stripe integration</Typography>
             <Typography variant='body1'>Our platform integrates directly with Stripe so you know your payments are secure.</Typography>
@@ -125,8 +127,9 @@ const Home = () => {
 
         <section className={classes.getStartedSection}>
             <Typography variant='h4' gutterBottom>Get started in just a few minutes</Typography>
-            <Button variant='contained' color='secondary'>Get started</Button>
+            <Button variant='contained' color='secondary' onClick={() => setIsModalOpen(!isModalOpen)}>Get started</Button>
         </section>
+        {isModalOpen && <SignInModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />}
         </Container>
     )
 }
