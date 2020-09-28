@@ -5,6 +5,7 @@ import {
 	makeStyles,
 	Button,
 	CssBaseline,
+	InputAdornment
 } from '@material-ui/core'
 import formatDate from '../../utils/formatDate'
 
@@ -27,22 +28,36 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const FormReview = ({formInfo: {fields, title}, formData: {inputDetails, handleFormReview, handleFormSubmit}}) => {
-    const classes = useStyles()
+const FormReview = ({formInfo: {fields, title}, formData: {inputDetails, handleFormReview, handleFormSubmit}, customers}) => {
+	const classes = useStyles()
+	const currentCustomer = customers.filter(customer => customer.stripeID === inputDetails.customer)[0]
 
-    const renderFields = fields.map(({ label, inputFor, type }) => (
-		<TextField
+    const renderFields = fields.map(({ label, inputFor, type }) => {
+		let reviewText;
+		switch (inputFor) {
+			case 'payableBy':
+				reviewText = formatDate(inputDetails[inputFor])
+				break
+			case 'customer':
+				reviewText = `${currentCustomer.name} - ${currentCustomer.email}`
+				break
+			default:
+				reviewText = inputDetails[inputFor]
+		}
+		
+		return (<TextField
             key={inputFor}
             label={label}
             name={inputFor}
             className={classes.formInput}
             type={type}
 			required
-			value={type !== 'selectDate' ? inputDetails[inputFor] : formatDate(inputDetails[inputFor])}
+			value={reviewText}
 			variant='outlined'
 			disabled
-		/>
-	))
+			InputProps={type === 'currency' && { startAdornment: <InputAdornment variant='outlined' position="start">$</InputAdornment>, endAdornment: <InputAdornment variant='outlined' position="start">.00</InputAdornment>}}
+		/>)
+	})
 
 	return (
 		<div>

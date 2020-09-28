@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, makeStyles, Button, Paper, Toolbar, Select, IconButton, MenuItem, FormControl, InputLabel, TextField } from '@material-ui/core'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, makeStyles, Button, Paper, Toolbar, Select, IconButton, MenuItem, FormControl, InputLabel, TextField, Typography } from '@material-ui/core'
 import { Clear as ClearIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import formatUnixDate from '../utils/formatUnixDate'
 import formatCurrency from '../utils/formatCurrency'
+import AmountDashboardCard from './AmountDashboardCard'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,10 +17,7 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.secondary.main
     },
     tableHeadCell: {
-        color: '#FFFFFF',
-        '&:hover': {
-            cursor: 'pointer'
-        }
+        color: '#FFFFFF'
     },
     moreBtn: {
         textDecoration: 'none'
@@ -45,61 +43,66 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         [theme.breakpoints.down('xs')]: {
             margin: '0.5rem 0rem',
-            padding: '0rem'
+            padding: '0rem',
+            display: 'block'
         }
     },
     filterStatus: {
         width: '10rem'
     },
     filterBar: {
+        display: 'flex',
         justifyContent: 'space-between',
-        marginBottom: '1rem'
-    }
+        alignItems: 'center',
+        marginBottom: '1rem',
+        flexWrap: 'wrap',
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: 'column',
+            justifyContent: 'flex-start'
+        }
+    },
+    amountCardContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: 'column',
+            justifyContent: 'flex-start'
+        }
+    },
+
 }))
 
-const tableHeaders = ['Emailed To', 'Issue Date', 'Due Date', 'Amount', 'Status', '']
+const tableHeaders = [{ label: 'Emailed To', labelFor: 'customerEmail' }, { label: 'Issue Date', labelFor: 'issueDate' }, { label: 'Due Date', labelFor: 'payableBy' }, { label: 'Amount', labelFor: 'amount' }, { label: 'Status', labelFor: 'status' }, { label: '', labelFor: '' }]
 const filterOptions = ['open', 'paid', 'void']
 
-const InvoiceTable = ({ invoices }) => {
+const InvoiceTable = ({ invoices, customers }) => {
     const classes = useStyles()
     const [isFiltering, setIsFiltering] = useState(false)
     const [filter, setFilter] = useState({})
     const [listToRender, setListToRender] = useState(invoices)
 
     const handleStatusFilter = (evt) => { setIsFiltering(true); setFilter({ ...filter, status: evt.target.value }) }
-    const handleSearchFilter = (evt) => { setIsFiltering(true); setFilter({ ...filter, customerEmail: evt.target.value }); console.log(evt.target) }
 
     const updateFilter = () => {
-        const filterValues = Object.values(filter)
 
-        filterValues.forEach((arg) => {
-            if (arg === '' || arg === ' ' || arg === undefined) return true
-        })
 
         const filteredInvoices = invoices.filter(invoice => {
-            let validInvoice = true
+            const filterValues = Object.values(filter)
+
+            filterValues.forEach((arg) => {
+                if (arg === '' || arg === ' ' || arg === undefined) return true
+            })
 
             for (const [key, value] of Object.entries(filter)) {
-                if (Array.isArray(value)) {
-                    if (!value.toLowerCase().includes(invoice[key]).toLowerCase()) {
-                        validInvoice = false
-                    }
-                }
-                else if (typeof value === 'function') {
-                    if (!value(invoice[key])) {
-                        validInvoice = false
-                    }
-                }
-                else if (invoice[key].toLowerCase().includes(filter[key].toLowerCase())) validInvoice = true
+                if (invoice[key].toLowerCase().includes(filter[key].toLowerCase())) return true
                 else {
-                    if (value !== invoice[key]) validInvoice = false
+                    if (value !== invoice[key]) return false
                 }
             }
-
-            return validInvoice
         })
 
         setListToRender(filteredInvoices)
+
     }
 
     useEffect(() => {
@@ -115,17 +118,17 @@ const InvoiceTable = ({ invoices }) => {
         setListToRender(invoices)
     }
 
+
     return (
         <div className={classes.root}>
             <Toolbar className={classes.filterBar}>
-                <TextField
-                    label='Search Emails'
-                    name='filter-search'
-                    type='text'
-                    value={filter.customerEmail || ''}
-                    variant='outlined'
-                    onChange={handleSearchFilter}
-                />
+
+                <div className={classes.amountCardContainer}>
+                    <AmountDashboardCard invoices={invoices} valueToSum='paid' label='Received Payments' />
+                    <AmountDashboardCard invoices={invoices} valueToSum='open' label='Outstanding Invoices' />
+                    
+                </div>
+
                 <div>
                     <FormControl
                         variant='outlined'
@@ -156,7 +159,7 @@ const InvoiceTable = ({ invoices }) => {
                 <Table>
                     <TableHead className={classes.tableHead}>
                         <TableRow>
-                            {tableHeaders.map((col) => <TableCell key={col} className={classes.tableHeadCell}>{col}</TableCell>)}
+                            {tableHeaders.map(({ label, labelFor }) => <TableCell key={labelFor} className={classes.tableHeadCell}>{label}</TableCell>)}
                         </TableRow>
                     </TableHead>
                     <TableBody>

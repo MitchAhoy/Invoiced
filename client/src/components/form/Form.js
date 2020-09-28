@@ -25,16 +25,12 @@ const Form = ({
 
 	const classes = useStyles()
 	const formInfo = formFields[formFor]
-
 	const { customers, getUserData } = useContext(UserContext)
-
 
 	const handleTypedChange = (evt) => formDispatch({type: 'UPDATE_TYPED_INPUTS', update: inputDetails , value: evt.target.value, key: evt.target.name})
 	const handleFormReview = (evt) => formDispatch({type: 'SET_IS_REVIEWING'})
 	const handleFormSubmit = (evt) => {formDispatch({type: 'SUBMIT_FORM', evt, formInfo, history}); getUserData()}
 	const handleDateChanged = (date) => formDispatch({type: 'UPDATE_DATE', date})
-
-
 
 	return (
 		<div>
@@ -48,6 +44,7 @@ const Form = ({
 							handleFormReview,
 							handleFormSubmit,
 						}}
+						customers={customers}
 					/>
 				) : (
 					<FormInput

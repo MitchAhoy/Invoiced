@@ -3,7 +3,6 @@ import { UserContext } from '../contexts/user.context'
 import {
 	Container,
 	CssBaseline,
-	Typography,
 	makeStyles,
 	Fab,
 } from '@material-ui/core'
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Dashboard = () => {
-	const { invoices, getUserData } = useContext(UserContext)
+	const { invoices, customers, getUserData } = useContext(UserContext)
 
 	useEffect(() => {
 		getUserData()
@@ -36,14 +35,9 @@ const Dashboard = () => {
 
 	return (
 		<Container>
-
-			<Typography variant='h3' gutterBottom>
-				Your invoices
-			</Typography>
-
 			<CssBaseline />
 			<Container>
-				{invoices.length > 0 ? <InvoiceTable invoices={invoices} /> : 'create an invoice'}
+				{invoices.length > 0 && <InvoiceTable invoices={invoices} customers={customers} />}
 			</Container>
 
 

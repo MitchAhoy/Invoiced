@@ -15,7 +15,7 @@ const theme = createMuiTheme({
         invoiceStatus: {
             open: '#4BCCF9',
             paid: '#29B063',
-            overdue: '#FD71AF',
+            unpaid: '#FD71AF',
             void: '#000000'
         }
     },

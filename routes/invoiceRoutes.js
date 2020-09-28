@@ -7,15 +7,18 @@ const stripe = Stripe(stripeSecretKey)
 
 module.exports = (app) => {
 	app.post('/api/new_invoice', async (req, res) => {
+		
 		try {
 			const { customer, description, amount, payableBy } = req.body
+			const convertCentsToDollars = (amount * 100)
+			console.log(convertCentsToDollars)
 
 			const product = await stripe.products.create({
 				name: description,
 			}, { stripeAccount: req.user.stripeAcct })
 
 			const price = await stripe.prices.create({
-				unit_amount: amount,
+				unit_amount: convertCentsToDollars,
 				currency: 'aud',
 				product: product.id,
 			}, { stripeAccount: req.user.stripeAcct })
@@ -41,7 +44,7 @@ module.exports = (app) => {
 				invoiceId: sendInvoice.id,
 				customerEmail: sendInvoice.customer_email,
 				description,
-				amount,
+				amount: convertCentsToDollars,
 				status: sendInvoice.status,
 				issueDate: sendInvoice.created,
 				payableBy: sendInvoice.due_date,
@@ -50,7 +53,6 @@ module.exports = (app) => {
 				_user: req.user.id,
 			}).save()
 			res.send(invoice)
-			console.log(sendInvoice)
 		} catch (err) {
 			console.log(err)
 			res.status(400)

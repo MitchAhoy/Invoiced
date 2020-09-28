@@ -136,6 +136,7 @@ const FormInput = ({
 									label={label}
 									onChange={handleTypedChange}
 									name={inputFor}
+									required
 									
 								>
 									{customers.map(({ name, email, stripeID }) => (
