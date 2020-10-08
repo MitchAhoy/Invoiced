@@ -171,7 +171,7 @@ const FormInput = ({
 						label='Payable by'
 						placeholder='2018/10/10'
 						format='yyyy/MM/dd'
-						value={inputDetails.payableBy ? inputDetails.payableBy : handleDateChanged(new Date())}
+						value={inputDetails.payableBy ? inputDetails.payableBy : handleDateChanged(new Date().setDate(new Date().getDate() + 1))}
 						inputVariant='outlined'
 						onChange={date => handleDateChanged(date)}
 						disablePast={true}

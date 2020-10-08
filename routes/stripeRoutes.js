@@ -25,10 +25,12 @@ module.exports = (app) => {
 				],
 			})
 
+			const domain = process.env.NODE_ENV === 'production' ? 'https://cryptic-shelf-98722.herokuapp.com' : 'http://localhost:3000'
+
 			const accountLink = await stripe.accountLinks.create({
 				account: account.id,
-				refresh_url: 'http://localhost:3000/reauth',
-				return_url: `http://localhost:3000/verification-success?client=${req.user.googleId}&acct=${account.id}`,
+				refresh_url: `${domain}/reauth`,
+				return_url: `${domain}/verification-success?client=${req.user.googleId}&acct=${account.id}`,
 				type: 'account_onboarding',
 				collect: 'eventually_due',
 			})

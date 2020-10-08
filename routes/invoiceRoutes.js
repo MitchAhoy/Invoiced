@@ -32,7 +32,7 @@ module.exports = (app) => {
 				{
 				customer,
 				collection_method: 'send_invoice',
-				due_date: new Date(payableBy)
+				due_date: Math.floor(new Date(payableBy).getTime() / 1000)
 				}, 
 				{ stripeAccount: req.user.stripeAcct }
 			)

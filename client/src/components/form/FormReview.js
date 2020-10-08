@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FormReview = ({formInfo: {fields, title}, formData: {inputDetails, handleFormReview, handleFormSubmit}, customers}) => {
 	const classes = useStyles()
-	const currentCustomer = customers.filter(customer => customer.stripeID === inputDetails.customer)[0]
+	const currentCustomer = customers && customers.filter(customer => customer.stripeID === inputDetails.customer)[0]
 
     const renderFields = fields.map(({ label, inputFor, type }) => {
 		let reviewText;
