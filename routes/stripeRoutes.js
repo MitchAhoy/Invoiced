@@ -29,8 +29,8 @@ module.exports = (app) => {
 
 			const accountLink = await stripe.accountLinks.create({
 				account: account.id,
-				refresh_url: `${domain}/reauth`,
-				return_url: `${domain}/verification-success?client=${req.user.googleId}&acct=${account.id}`,
+				refresh_url: 'https://cryptic-shelf-98722.herokuapp.com/reauth',
+				return_url: `https://cryptic-shelf-98722.herokuapp.com/verification-success?client=${req.user.googleId}&acct=${account.id}`,
 				type: 'account_onboarding',
 				collect: 'eventually_due',
 			})
