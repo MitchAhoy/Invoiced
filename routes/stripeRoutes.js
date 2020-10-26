@@ -25,8 +25,6 @@ module.exports = (app) => {
 				],
 			})
 
-			const domain = process.env.NODE_ENV === 'production' ? 'https://cryptic-shelf-98722.herokuapp.com' : 'http://localhost:3000'
-
 			const accountLink = await stripe.accountLinks.create({
 				account: account.id,
 				refresh_url: 'https://cryptic-shelf-98722.herokuapp.com/reauth',
