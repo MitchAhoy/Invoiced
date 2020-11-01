@@ -1,5 +1,5 @@
 # Invoiced
-An all-in-on invoice management application. Integrated with the Stripe API, users are able to create an account and send invoices to customers instantly, track the status of their invoices and receive payments. 
+An all-in-one invoice management application. Integrated with the Stripe API, users are able to create an account and send invoices to customers instantly, track the status of their invoices and receive payments. 
 
 See the live application here: https://cryptic-shelf-98722.herokuapp.com/
 
